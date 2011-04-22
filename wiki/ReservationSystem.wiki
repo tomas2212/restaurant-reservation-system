@@ -1,0 +1,11 @@
+#summary This is the page presenting the web application.
+#labels Java,Phase-Implementation
+
+= Introduction =
+
+The application should be able to reserve a table in a current time by a registered user. The user is allowed to manage all his reservations, edit them or completely delete some of them.
+
+
+= Details =
+
+The application is being programmed in Java (in progress). The page will be soon established with a Class Diagram and so on...
