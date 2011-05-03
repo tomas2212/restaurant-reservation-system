@@ -1,0 +1,25 @@
+/* 
+    Document   : IndexCss
+    Created on : May 3, 2011, 9:23:23 PM
+    Author     : Demqoo
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+div#mainWindow {
+    margin-left: 500px;
+    height: 1200px ;
+    width:1000px;
+    background:#B0B0B0 ;
+    border-style: solid;
+    border-width: thin;
+    border-color:#A0A0A0  ;
+}
+body{
+    background:#E0E0E0 ;
+}

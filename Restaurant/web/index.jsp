@@ -11,9 +11,26 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <link rel="stylesheet" href="IndexCss.css" type="text/css">
+        <title>Reservation System</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <div align="right" style="margin-top:10px;" >
+         <form action="${pageContext.request.contextPath}/LoginServlet" method="post" >
+                Name : <input type="text" name="name" /> <br/>
+                Password : <input type="text" name="password" /> <br/>
+                <input type="Submit" value="Zadat" />
+         </form>
+        </div>
+
+        <div align="center" style="margin-top:10px; " ><h1>IT Restaurant</h1> </div>
+        
+
+        <div id="mainWindow">
+
+
+        </div>
+
+
     </body>
 </html>

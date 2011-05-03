@@ -19,7 +19,7 @@ public class TableManagerImpl implements TableManager{
 
     public boolean addTable() {
         Table table = new Table(vip);
-
+        return false;
     }
 
     public boolean deleteTable() {
