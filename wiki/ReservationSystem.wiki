@@ -9,3 +9,5 @@ The application should be able to reserve a table in a current time by a registe
 = Details =
 
 The application is being programmed in Java (in progress). The page will be established soon with a Class Diagram and so on...
+
+<a href="./Class_Diagram.jpeg" alt="classDiagram">Class Diagram</a>
