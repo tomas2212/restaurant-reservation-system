@@ -1,36 +1,7 @@
-<%-- 
-    Document   : index
-    Created on : 28.4.2011, 12:44:42
-    Author     : Tomasius
---%>
-<!--
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="IndexCss.css" type="text/css">
-        <title>Reservation System</title>
-    </head>
-    <body>
-        <div align="right" style="margin-top:10px;" >
-         <form action="${pageContext.request.contextPath}/LoginServlet" method="post" >
-                Name : <input type="text" name="name" /> <br/>
-                Password : <input type="text" name="password" /> <br/>
-                <input type="Submit" value="Zadat" />
-         </form>
-        </div>
-
-        <div align="center" style="margin-top:10px; " ><h1>IT Restaurant</h1> </div>
-        
-
-        <div id="mainWindow">
-
-
-        </div>
-   -->
 
    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="EN" lang="EN" dir="ltr">
@@ -51,15 +22,6 @@
         <li><a href="Reservation.jsp">Reservation</a></li>
       </ul>
     </div>
-  </div>
-</div>
-<div class="wrapper col2">
-  <div id="gallery">
-    <ul>
-      <li class="placeholder" style="background-image:url(images/1.jpg);">Image Holder</li> <br/> <br/>
-      <li style="padding-left: 100px; text-indent:50px; font-size: 1.5em;">       M.Briskar : <strong> "best restaurant ever" </strong> </li>
-    </ul>
-    <div class="clear"></div>
   </div>
 </div>
 <div class="wrapper col4">
@@ -84,56 +46,12 @@
       </div>
       <p>Odiointesque at quat nam nec quis ut feugiat consequet orci liberos. Tempertincidunt sed maecenas eros elerit nullam vest rhoncus diam consequat amet. Diamdisse ligula tincidunt a orci proin auctor lacilis lacilis met vitae.</p>
     </div>
-    <div id="column">
-      <div id="featured">
-        <ul>
-          <li>
-            <h2>Indonectetus facilis leonib</h2>
-            <p class="imgholder"><img src="images/demo/240x90.gif" alt="" /></p>
-            <p>Nullamlacus dui ipsum conseque loborttis non euisque morbi penas dapibulum orna. Urnaultrices quis curabitur phasellentesque congue magnis vestibulum quismodo nulla et feugiat. Adipisciniapellentum leo ut consequam ris felit elit id nibh sociis malesuada.</p>
-            <p class="more"><a href="#">Read More &raquo;</a></p>
-          </li>
-        </ul>
-      </div>
-      <div class="holder">
-        <div class="imgholder"><img src="images/demo/290x100.gif" alt="" /></div>
-        <p>Nullamlacus dui ipsum conseque loborttis non euisque morbi penas dapibulum orna.</p>
-        <p class="readmore"><a href="#">Read More &raquo;</a></p>
-      </div>
-    </div>
+
     <div class="clear"></div>
   </div>
 </div>
 <div class="wrapper col5">
   <div id="footer">
-    <div id="contactform">
-      <h2>Why Not Contact Us Today !</h2>
-      <form action="#" method="post">
-        <fieldset>
-        <legend>Contact Form</legend>
-        <label for="fullname">Name:
-        <input id="fullname" name="fullname" type="text" value="" />
-        </label>
-        <label for="emailaddress" class="margin">Email:
-        <input id="emailaddress" name="emailaddress" type="text" value="" />
-        </label>
-        <label for="phone">Telephone:
-        <input id="phone" name="phone" type="text" value="" />
-        </label>
-        <label for="subject" class="margin">Subject:
-        <input id="subject" name="subject" type="text" value="" />
-        </label>
-        <label for="message">Message:<br />
-        <textarea id="message" name="message" cols="40" rows="4"></textarea>
-        </label>
-        <p>
-          <input id="submitform" name="submitform" type="submit" value="Submit" />
-          &nbsp;
-          <input id="resetform" name="resetform" type="reset" value="Reset" />
-        </p>
-        </fieldset>
-      </form>
-    </div>
     <!-- End Contact Form -->
     <div id="compdetails">
       <div id="officialdetails">
@@ -173,5 +91,5 @@
 </div>
 </body>
 
- 
+
 </html>
