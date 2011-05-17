@@ -5,6 +5,7 @@
 
 package cz.muni.fi.pb138.restaurant.servlets;
 
+import cz.muni.fi.pb138.restaurant.UserManagerImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -17,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Demqoo
  */
 public class LoginServlet extends HttpServlet {
-   
+   UserManagerImpl manager = new UserManagerImpl();
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -59,7 +60,7 @@ public class LoginServlet extends HttpServlet {
          String name = request.getParameter("name");
          String password = request.getParameter("password");
 
-         if(password!=null && !"".equals(password) && name!=null && !"".equals(name)) {
+         if(manager.login(name, password)) {
              //spytat sa, ci sa zhoduju, ak ano, ulozit si prihlasene meno
          }
          request.getRequestDispatcher("/index.jsp").forward(request, response);
