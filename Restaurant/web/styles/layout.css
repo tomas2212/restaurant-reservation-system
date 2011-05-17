@@ -12,13 +12,15 @@ Licence: <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons 
 @import url(tables.css);
 
 
+
+
 body{
 	margin:0;
 	padding:0;
 	font-size:13px;
 	font-family:verdana, Arial, Helvetica, sans-serif;
 	color:#FFFFFF;
-	background-color:#4F473A;
+	background-color:#294E79;
 	}
 
 img{border:0; padding:0; margin:0;}
@@ -51,7 +53,7 @@ div.wrapper{
 .col2{color:#666666; background-color:#F5F5F5;}
 .col2 a{color:#294E79; background-color:#F5F5F5;}
 .col3, .col4{color:#666666; background-color:#FFFFFF;}
-.col5{color:#FFFFFF; background-color:#1C3451;}
+.col5{color:#FFFFFF; background-color:#294E79;}
 
 /* ----------------------------------------------Generalise-------------------------------------*/
 
@@ -226,7 +228,7 @@ div.wrapper{
 	background-color:#F7F7F7;
 	border:1px solid #CCCCCC;
 	}
-	
+
 /* Featured Block */
 
 #column #featured a{
@@ -291,7 +293,7 @@ div.wrapper{
 
 #footer a{
 	color:#98B7DC;
-	background-color:#1C3451;
+	background-color:#294E79;
 	}
 
 #footer h2{
@@ -301,7 +303,7 @@ div.wrapper{
 	font-weight:normal;
 	font-family:Georgia, "Times New Roman", Times, serif;
 	color:#CCCCCC;
-	background-color:#1C3451;
+	background-color:#294E79;
 	line-height:normal;
 	border-bottom:1px dashed #CCCCCC;
 	}
