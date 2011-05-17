@@ -53,7 +53,7 @@
 <div class="wrapper col1">
   <div id="head">
     <h1><a href="#">The IT Restaurant</a></h1>
-    <div id="topnav">
+    <div id="topnav"> 
       <ul>
         <li><a class="active" href="index.jsp">Home</a></li>
 
