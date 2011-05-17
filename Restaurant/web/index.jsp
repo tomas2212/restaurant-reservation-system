@@ -44,10 +44,10 @@
 <div class="wrapper col1">
   <div id="head">
     <h1><a href="#">The IT Restaurant</a></h1>
-    <p>(Free Open Source CSS Website Template)</p>
     <div id="topnav">
       <ul>
         <li><a class="active" href="index.jsp">Home</a></li>
+        <li><a href="Registration.jsp">Registration</a></li>
         <li><a href="Reservation.jsp">Reservation</a></li>
       </ul>
     </div>

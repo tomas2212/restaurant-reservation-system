@@ -18,7 +18,9 @@
     <p>(Free Open Source CSS Website Template)</p>
     <div id="topnav">
       <ul>
-        <li><a class="active" href="index.jsp">Home</a></li>
+          <li><a class="active" href="index.jsp">Home</a></li> <% String name = (String)session.getAttribute("name");
+            if(name == null || "".equals(name)) { %>
+        <li><a href="Registration.jsp">Registration</a></li>  <% } %>
         <li><a href="Reservation.jsp">Reservation</a></li>
       </ul>
     </div>
