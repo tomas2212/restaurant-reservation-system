@@ -47,8 +47,8 @@
         <p><a class="login" href="Registration.jsp">Log in</a> </p>
     </div>
      <% } else { %>
-     <p class="login"> Hello <%=session.getAttribute("name") %> </p>
-     <p><a class="login" href="Registration.jsp">Log out</a> </p>
+     <p class="login"> Hello <%=session.getAttribute("name") %>! </p>
+    <p><a class="logout" href="${pageContext.request.contextPath}/LoginServlet?logout=true">Log out</a></p>
     <% } %>
 <div class="wrapper col1">
   <div id="head">
