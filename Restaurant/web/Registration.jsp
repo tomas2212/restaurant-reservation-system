@@ -18,12 +18,14 @@
         <p><a class="login" href="Registration.jsp">Log in</a> </p>
     </div>
      <% } else { %>
-     <p class="corner"> Hello <%=session.getAttribute("name") %> </p>
+     
+      <p > Hello <%=session.getAttribute("name") %> </p>
+      <p><a href="${pageContext.request.contextPath}/LoginServlet?logout=true">Log out</a></p>
     <% } %>
 <div class="wrapper col1">
   <div id="head">
     <h1><a href="#">The IT Restaurant</a></h1>
-    <p>(Free Open Source CSS Website Template)</p>
+    <p>School project</p>
     <div id="topnav">
       <ul>
           <li><a  href="index.jsp">Home</a></li>

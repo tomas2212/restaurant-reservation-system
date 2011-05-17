@@ -17,6 +17,16 @@ Licence: <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons 
         color:white;
 }
 
+.logout {
+        font-size:15px;
+        position:absolute;
+
+        top:65px;
+        right:50px;
+        text-decoration: none;
+        color:white;
+}
+
 
 #topnav{
 	display:block;
