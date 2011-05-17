@@ -58,10 +58,15 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        if( request.getParameter("logout") !=null && "true".equals(request.getParameter("logout"))) {
+            HttpSession session = request.getSession(true);
+             session.setAttribute("name", "");
+        }
+
          String name = request.getParameter("name");
          String password = request.getParameter("password");
 
-         if(manager.login(name, password) ) {
+         if(/*manager.login(name, password) &&*/ "true".equals(request.getParameter("login")) ) {
              HttpSession session = request.getSession(true);
              session.setAttribute("name", name);
          }

@@ -6,6 +6,18 @@ Author URI: http://www.os-templates.com/
 Licence: <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported</a>
 */
 
+
+.login {
+        font-size:20px;
+        position:absolute;
+
+        top:20px;
+        right:50px;
+        text-decoration: none;
+        color:white;
+}
+
+
 #topnav{
 	display:block;
 	position:absolute;
@@ -41,7 +53,7 @@ Licence: <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons 
 	color:#666666;
 	background-color:#F5F5F5;
 	}
-	
+
 #topnav li li a:link, #topnav li li a:visited{
 	width:150px;
 	float:none;
@@ -52,7 +64,7 @@ Licence: <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons 
 	color:#FFFFFF;
 	background-color:#3D73B1;
 	}
-	
+
 #topnav li li a:hover{
 	color:#666666;
 	background-color:#F5F5F5;
@@ -81,3 +93,4 @@ Licence: <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons 
 #topnav li:hover{ position: static;}
 
 #topnav li.last a{margin-right:0;}
+

@@ -41,18 +41,32 @@
 <link rel="stylesheet" href="styles/layout.css" type="text/css" />
 </head>
 <body id="top">
+    <% String name = (String)session.getAttribute("name");
+            if(name == null || "".equals(name)) { %>
+    <div class="corner">
+        <p><a class="login" href="Registration.jsp">Log in</a> </p>
+    </div>
+     <% } else { %>
+     <p class="login"> Hello <%=session.getAttribute("name") %> </p>
+     <p><a class="login" href="Registration.jsp">Log out</a> </p>
+    <% } %>
 <div class="wrapper col1">
   <div id="head">
     <h1><a href="#">The IT Restaurant</a></h1>
     <div id="topnav">
       <ul>
         <li><a class="active" href="index.jsp">Home</a></li>
-        <li><a href="Registration.jsp">Registration</a></li>
+
         <li><a href="Reservation.jsp">Reservation</a></li>
       </ul>
     </div>
+    
+    
   </div>
+    
 </div>
+
+    
 <div class="wrapper col2">
   <div id="gallery">
     <ul>
@@ -70,7 +84,7 @@
         <ul>
           <li>
             <p class="imgholder"><img src="images/8.jpg" alt="" /></p>
-            <h2>Our enviroment is clear</h2>
+            <h2>Our environment is clear</h2>
             <p>and so on</p>
             
           </li>

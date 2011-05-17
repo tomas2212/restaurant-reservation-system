@@ -12,15 +12,21 @@
 <link rel="stylesheet" href="styles/layout.css" type="text/css" />
 </head>
 <body id="top">
+     <% String name = (String)session.getAttribute("name");
+            if(name == null || "".equals(name)) { %>
+    <div class="corner">
+        <p><a class="login" href="Registration.jsp">Log in</a> </p>
+    </div>
+     <% } else { %>
+     <p class="corner"> Hello <%=session.getAttribute("name") %> </p>
+    <% } %>
 <div class="wrapper col1">
   <div id="head">
     <h1><a href="#">The IT Restaurant</a></h1>
     <p>(Free Open Source CSS Website Template)</p>
     <div id="topnav">
       <ul>
-          <li><a class="active" href="index.jsp">Home</a></li> <% String name = (String)session.getAttribute("name");
-            if(name == null || "".equals(name)) { %>
-        <li><a href="Registration.jsp">Registration</a></li>  <% } %>
+          <li><a  href="index.jsp">Home</a></li>
         <li><a href="Reservation.jsp">Reservation</a></li>
       </ul>
     </div>
@@ -34,7 +40,7 @@
         <ul>
           <li>
             <h1>In the case you are not registered, register here</h1>
-            <form action="${pageContext.request.contextPath}/LoginServlet" method="post" >
+            <form action="${pageContext.request.contextPath}/LoginServlet?register=true" method="post" >
                 Name : <input type="text" name="name" /> <br/>
                 Password : <input type="text" name="password" /> <br/>
                 <input type="Submit" value="Register" />
@@ -42,7 +48,7 @@
           </li>
           <li class="last">
             <h1>In the case you are registered, log in here :</h1>
-            <form action="${pageContext.request.contextPath}/LoginServlet" method="post" >
+            <form action="${pageContext.request.contextPath}/LoginServlet?login=true" method="post" >
                 Name : <input type="text" name="name" /> <br/>
                 Password : <input type="text" name="password" /> <br/>
                 <input type="Submit" value="Log in" />
