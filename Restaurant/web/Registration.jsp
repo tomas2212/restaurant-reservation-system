@@ -27,55 +27,56 @@
 <div class="wrapper col4">
   <div id="container">
     <div id="content">
-      <h1>About This Free CSS Template</h1>
+      <h1>Who are you?</h1>
       <div class="homecontent">
         <ul>
           <li>
-            <p class="imgholder"><img src="images/8.jpg" alt="" /></p>
-            <p class="readmore"><a href="#">Read More &raquo;</a></p>
+            <h1>In the case you are not registered, register here</h1>
+            <form action="${pageContext.request.contextPath}/LoginServlet" method="post" >
+                Name : <input type="text" name="name" /> <br/>
+                Password : <input type="text" name="password" /> <br/>
+                <input type="Submit" value="Register" />
+             </form>
           </li>
           <li class="last">
-            <p class="imgholder"><img src="images/demo/286x100.gif" alt="" /></p>
-            <h2>Indonectetus facilis leo nibh</h2>
-            <p>Nullamlacus dui ipsum conseque loborttis non euisque morbi penas dapibulum orna.</p>
-            <p>Urnaultrices quis curabitur phasellentesque congue magnis vestibulum quismodo nulla et feugiat. Adipisciniapellentum leo ut consequam ris felit elit id nibh sociis malesuada.</p>
-            <p class="readmore"><a href="#">Read More &raquo;</a></p>
+            <h1>In the case you are registered, log in here :</h1>
+            <form action="${pageContext.request.contextPath}/LoginServlet" method="post" >
+                Name : <input type="text" name="name" /> <br/>
+                Password : <input type="text" name="password" /> <br/>
+                <input type="Submit" value="Log in" />
+             </form>
           </li>
         </ul>
         <div class="clear"></div>
       </div>
-      <p>Odiointesque at quat nam nec quis ut feugiat consequet orci liberos. Tempertincidunt sed maecenas eros elerit nullam vest rhoncus diam consequat amet. Diamdisse ligula tincidunt a orci proin auctor lacilis lacilis met vitae.</p>
+      <p>This application is created by students, so please dont use you primary passwords</p>
     </div>
 
     <div class="clear"></div>
   </div>
 </div>
+
 <div class="wrapper col5">
   <div id="footer">
     <!-- End Contact Form -->
     <div id="compdetails">
       <div id="officialdetails">
-        <h2>Company Information !</h2>
+        <h2>IT Restaurant</h2>
         <ul>
-          <li>Company Name Ltd</li>
-          <li>Registered in England &amp; Wales</li>
-          <li>Company No. xxxxxxx</li>
-          <li class="last">VAT No. xxxxxxxxx</li>
+          <li>For the school project</li>
+          <li class="last">PB158</li>
         </ul>
-        <h2>Stay in The Know !</h2>
-        <p><a href="#">Get Our E-Newsletter</a> | <a href="#">Grab The RSS Feed</a></p>
       </div>
       <div id="contactdetails">
         <h2>Our Contact Details !</h2>
         <ul>
-          <li>Company Name</li>
-          <li>Street Name &amp; Number</li>
-          <li>Town</li>
-          <li>Postcode/Zip</li>
+          <li>IT Restaurant</li>
+          <li>Masaryk University</li>
+          <li>Brno</li>
           <li>Tel: xxxxx xxxxxxxxxx</li>
-          <li>Fax: xxxxx xxxxxxxxxx</li>
-          <li>Email: info@domain.com</li>
-          <li class="last">LinkedIn: <a href="#">Company Profile</a></li>
+          <li></li>
+          <li>Email: </li>
+          <li class="last">Fax: xxxxx xxxxxxxxxx </li>
         </ul>
       </div>
       <div class="clear"></div>
