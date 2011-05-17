@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -60,8 +61,9 @@ public class LoginServlet extends HttpServlet {
          String name = request.getParameter("name");
          String password = request.getParameter("password");
 
-         if(manager.login(name, password)) {
-             //spytat sa, ci sa zhoduju, ak ano, ulozit si prihlasene meno
+         if(manager.login(name, password) ) {
+             HttpSession session = request.getSession(true);
+             session.setAttribute("name", name);
          }
          request.getRequestDispatcher("/index.jsp").forward(request, response);
     }
