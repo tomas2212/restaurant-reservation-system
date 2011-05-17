@@ -27,6 +27,10 @@ public class UserManagerImpl implements UserManager{
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public boolean Login(String name, String password) {
+        return false;
+    }
+
    
 
 }
