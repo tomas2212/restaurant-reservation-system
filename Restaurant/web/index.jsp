@@ -54,16 +54,24 @@
       <div class="homecontent">
         <ul>
           <li>
-            <p class="imgholder"><img src="images/8.jpg" alt="" /></p>
-            <h2>Our environment is clear</h2>
-            <p>and so on</p>
+            <p class="imgholder">
+              <% if(name != null && !"".equals(name)) { %>
+              <a href="Reservation.jsp" > <img src="images/8.jpg" alt="" /> </a> 
+              <% } else { %> 
+              <a href="Registration.jsp" > <img src="images/8.jpg" alt="" /> </a> 
+              <% }%>
+            </p>
+
+            <h2>NEW RESERVATION SYSTEM</h2>
+            <p>If you are logged, please feel free to try our new reservetion system for the tables in our restaurant.</p>
+            <p>It has won a price for the most useless project ever made :) </p>
             
           </li>
           <li class="last">
-            <p class="imgholder"><img src="images/demo/286x100.gif" alt="" /></p>
-            <h2>Our menu is the best in the city</h2>
-            <p>We are cool restaurant</p>
-            <p>Our prices .... </p>
+            <p class="imgholder"><img src="images/second.jpg" alt="" /></p>
+            <h2>Our food is the best in the city</h2>
+            <p>We pay attention to the trend and make the food like everyone wants it</p>
+            <p>Our prices are the biggest, but why not to pay for such a good meat? </p>
             
           </li>
         </ul>
