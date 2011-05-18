@@ -5,7 +5,8 @@
 
 package cz.muni.fi.pb138.restaurant.servlets;
 
-import cz.muni.fi.pb138.restaurant.UserManagerImpl;
+import cz.muni.fi.pb138.restaurant.User;
+import cz.muni.fi.pb138.restaurant.UserManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Demqoo
  */
-public class IndexServlet extends HttpServlet {
+public class MyProfile extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -35,10 +36,10 @@ public class IndexServlet extends HttpServlet {
             /* TODO output your page here
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet IndexServlet</title>");  
+            out.println("<title>Servlet MyProfile</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet IndexServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet MyProfile at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
             */
@@ -59,15 +60,13 @@ public class IndexServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         HttpSession session = request.getSession(true);
-        if(session.getAttribute("manager") == null) {session.setAttribute("manager", new UserManagerImpl());}
-        ShowPage(request, response);
+        String name = (String) session.getAttribute("name");
+
+        UserManager manager = (UserManager)session.getAttribute("manager");
+        request.setAttribute("user", manager.findUser(name));
+        processRequest(request, response);
     } 
 
-    private void ShowPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //tu prezriet, ci je prihlaseny a podla toho predat atribut name, potom este nejake veci na vykreslenie
-        processRequest(request, response);
-
-    }
     /** 
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
@@ -78,7 +77,7 @@ public class IndexServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        ShowPage(request, response);
+        processRequest(request, response);
     }
 
     /** 

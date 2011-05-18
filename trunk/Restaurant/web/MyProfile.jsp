@@ -1,4 +1,3 @@
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -10,7 +9,7 @@
 <link rel="stylesheet" href="styles/layout.css" type="text/css" />
 </head>
 <body id="top">
-    <% String name = (String)session.getAttribute("name");
+     <% String name = (String)session.getAttribute("name");
             if(name == null || "".equals(name)) { %>
     <div class="corner">
         <p><a class="login" href="Registration.jsp">Log in</a> </p>
@@ -22,80 +21,57 @@
 <div class="wrapper col1">
   <div id="head">
     <h1><a href="#">The IT Restaurant</a></h1>
-    <div id="topnav"> 
+    <p>School project</p>
+    <div id="topnav">
       <ul>
-        <li><a class="active" href="index.jsp">Home</a></li>
+        <li><a  href="index.jsp">Home</a></li>
         <% if(name != null && !"".equals(name)) { %>
         <li><a href="Reservation.jsp">Reservation</a></li>
-        <li><a href="MyProfile.jsp">My Profile</a></li>
+        <li><a href="MyProfile.jsp">Reservation</a></li>
         <% } %>
       </ul>
     </div>
-    
-    
-  </div>
-    
-</div>
-
-    
-<div class="wrapper col2">
-  <div id="gallery">
-    <ul>
-      <li class="placeholder" style="background-image:url(images/1.jpg);">Image Holder</li> <br/> <br/>
-      <li style="padding-left: 100px; text-indent:50px; font-size: 1.5em;">       M.Briskar : <strong> "best restaurant ever" </strong> </li>
-    </ul>
-    <div class="clear"></div>
   </div>
 </div>
 <div class="wrapper col4">
   <div id="container">
-    <div id="content">
-      <h1>About The restaurant</h1>
+   
       <div class="homecontent">
         <ul>
           <li>
-            <p class="imgholder"><img src="images/8.jpg" alt="" /></p>
-            <h2>Our environment is clear</h2>
-            <p>and so on</p>
-            
+            <h1>Your details</h1>
+            <p>Email : ${user.email} </p>
+            <p>First name : ${user.name} </p>
+            <p>Surname : ${user.surname} </p>
+
           </li>
           <li class="last">
-            <p class="imgholder"><img src="images/demo/286x100.gif" alt="" /></p>
-            <h2>Our menu is the best in the city</h2>
-            <p>We are cool restaurant</p>
-            <p>Our prices .... </p>
-            
+            <h1>Your reservations :</h1> <!--
+             <c:forEach items="${reservations}" var="book">
+            <tr>
+                <td><c:out value="${book.isbn}"/></td>
+                <td><c:out value="${book.name}"/></td>
+                <td><c:out value="${book.author}"/></td>
+                <td><c:out value="${book.pageNumber}"/></td>
+                <td><c:out value="${book.owner}"/></td>
+                <td><c:out value="Book"/></td>
+            </tr>
+        </c:forEach> -->
           </li>
         </ul>
         <div class="clear"></div>
       </div>
-      <p>Come visit us!</p>
-    </div>
-    <div id="column">
-      <div id="featured">
-        <ul>
-          <li>
-            <h2>Indonectetus facilis leonib</h2>
-            <p class="imgholder"><img src="images/demo/240x90.gif" alt="" /></p>
-            <p>Nullamlacus dui ipsum conseque loborttis non euisque morbi penas dapibulum orna. Urnaultrices quis curabitur phasellentesque congue magnis vestibulum quismodo nulla et feugiat. Adipisciniapellentum leo ut consequam ris felit elit id nibh sociis malesuada.</p>
-            
-          </li>
-        </ul>
-      </div>
-      <div class="holder">
-        <div class="imgholder"><img src="images/demo/290x100.gif" alt="" /></div>
-        <p>Nullamlacus dui ipsum conseque loborttis non euisque morbi penas dapibulum orna.</p>
-        <p class="readmore"><a href="#">Read More &raquo;</a></p>
-      </div>
-    </div>
+      <p>This application is created by students, so please dont use you primary passwords</p>
+ 
+
     <div class="clear"></div>
   </div>
 </div>
+
 <div class="wrapper col5">
   <div id="footer">
-    
-  
-     <div id="compdetails">
+    <!-- End Contact Form -->
+    <div id="compdetails">
       <div id="officialdetails">
         <h2>IT Restaurant</h2>
         <ul>
@@ -128,5 +104,5 @@
 </div>
 </body>
 
- 
+
 </html>

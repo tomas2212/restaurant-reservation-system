@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
  * @author Demqoo
  */
 public class LoginServlet extends HttpServlet {
-   UserManagerImpl manager = new UserManagerImpl();
+   //UserManagerImpl manager = new UserManagerImpl(); cez session
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -48,6 +48,7 @@ public class LoginServlet extends HttpServlet {
          if( request.getParameter("logout") !=null && "true".equals(request.getParameter("logout"))) {
             HttpSession session = request.getSession(true);
              session.setAttribute("name", "");
+
         }
        request.getRequestDispatcher("/index.jsp").forward(request, response);
     } 
@@ -65,6 +66,7 @@ public class LoginServlet extends HttpServlet {
         if( request.getParameter("logout") !=null && "true".equals(request.getParameter("logout"))) {
             HttpSession session = request.getSession(true);
              session.setAttribute("name", "");
+
         }
 
          String name = request.getParameter("name");
