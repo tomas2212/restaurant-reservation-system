@@ -1,7 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
-
 
    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="EN" lang="EN" dir="ltr">
@@ -18,9 +15,8 @@
         <p><a class="login" href="Registration.jsp">Log in</a> </p>
     </div>
      <% } else { %>
-     
-      <p > Hello <%=session.getAttribute("name") %> </p>
-      <p><a href="${pageContext.request.contextPath}/LoginServlet?logout=true">Log out</a></p>
+     <p class="login"> Hello <%=session.getAttribute("name") %>! </p>
+    <p><a class="logout" href="${pageContext.request.contextPath}/LoginServlet?logout=true">Log out</a></p>
     <% } %>
 <div class="wrapper col1">
   <div id="head">
@@ -28,8 +24,11 @@
     <p>School project</p>
     <div id="topnav">
       <ul>
-          <li><a  href="index.jsp">Home</a></li>
+        <li><a  href="index.jsp">Home</a></li>
+        <% if(name != null && !"".equals(name)) { %>
         <li><a href="Reservation.jsp">Reservation</a></li>
+        <li><a href="MyProfile.jsp">Reservation</a></li>
+        <% } %>
       </ul>
     </div>
   </div>

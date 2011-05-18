@@ -4,10 +4,13 @@
         <servlet-name>IndexServlet</servlet-name>
         <servlet-class>cz.muni.fi.pb138.restaurant.servlets.IndexServlet</servlet-class>
     </servlet>
-    
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>cz.muni.fi.pb138.restaurant.servlets.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MyProfile</servlet-name>
+        <servlet-class>cz.muni.fi.pb138.restaurant.servlets.MyProfile</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>IndexServlet</servlet-name>
@@ -16,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyProfile</servlet-name>
+        <url-pattern>/MyProfile</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
