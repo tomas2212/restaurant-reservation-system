@@ -26,8 +26,8 @@
       <ul>
         <li><a  href="index.jsp">Home</a></li>
         <% if(name != null && !"".equals(name)) { %>
-        <li><a href="Reservation.jsp">Reservation</a></li>
-        <li><a href="MyProfile.jsp">Reservation</a></li>
+        <li><a  href="Reservation.jsp">Reservation</a></li>
+        <li><a href="MyProfile.jsp">My Profile</a></li>
         <% } %>
       </ul>
     </div>
@@ -42,16 +42,18 @@
           <li>
             <h1>In the case you are not registered, register here</h1>
             <form action="${pageContext.request.contextPath}/LoginServlet?register=true" method="post" >
-                Name : <input type="text" name="name" /> <br/>
-                Password : <input type="text" name="password" /> <br/>
+                Firstname : <input type="text" name="name" /> <br/> <br/>
+                Surname : <input type="text" name="name" /> <br/> <br/>
+                E-mail : <input type="text" name="name" /> <br/> <br/>
+                Password : <input type="password" name="password" /> <br/>
                 <input type="Submit" value="Register" />
              </form>
           </li>
           <li class="last">
             <h1>In the case you are registered, log in here :</h1>
             <form action="${pageContext.request.contextPath}/LoginServlet?login=true" method="post" >
-                Name : <input type="text" name="name" /> <br/>
-                Password : <input type="text" name="password" /> <br/>
+                Name : <input type="text" name="name" /> <br/> <br/>
+                Password : <input type="password" name="password" /> <br/>
                 <input type="Submit" value="Log in" />
              </form>
           </li>

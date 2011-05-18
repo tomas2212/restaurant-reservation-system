@@ -26,8 +26,8 @@
       <ul>
         <li><a  href="index.jsp">Home</a></li>
         <% if(name != null && !"".equals(name)) { %>
-        <li><a href="Reservation.jsp">Reservation</a></li>
-        <li><a href="MyProfile.jsp">Reservation</a></li>
+        <li><a class ="active" href="Reservation.jsp">Reservation</a></li>
+        <li><a href="MyProfile.jsp">My Profile</a></li>
         <% } %>
       </ul>
     </div>
