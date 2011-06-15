@@ -5,7 +5,6 @@
 
 package cz.muni.fi.pb138.restaurant.servlets;
 
-import cz.muni.fi.pb138.restaurant.UserManagerImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;

@@ -14,11 +14,24 @@ public class Reservation {
     private int reservationId;
     private User user;
     private Table table;
-
+    private String date;
+    private int time;
+    private int duration;
 
     protected Reservation(User user, Table table) {
         this.user = user;
         this.table = table;
+    }
+
+    protected Reservation(){
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public int getReservationId() {
@@ -43,6 +56,22 @@ public class Reservation {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     @Override

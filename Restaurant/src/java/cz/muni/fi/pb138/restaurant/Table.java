@@ -10,31 +10,24 @@ package cz.muni.fi.pb138.restaurant;
  * @author Tomasius
  */
 public class Table {
-    
+
     private int tableId;
-    private boolean reservation;
-    private int seats;
+    private int places;
     private boolean vip;
 
+    public Table(){
+    }
+
     public Table(boolean vip) {
-        this.reservation = false;
         this.vip = vip;
     }
 
-    public boolean isReservation() {
-        return reservation;
+    public int getPlaces() {
+        return places;
     }
 
-    public void setReservation(boolean reservation) {
-        this.reservation = reservation;
-    }
-
-    public int getSeats() {
-        return seats;
-    }
-
-    public void setSeats(int seats) {
-        this.seats = seats;
+    public void setPlaces(int places) {
+        this.places = places;
     }
 
     public int getTableId() {

@@ -11,11 +11,14 @@ package cz.muni.fi.pb138.restaurant;
  */
 public class User {
 
-    private int userId;
     private String firstname;
     private String surname;
-    private boolean vip;
     private String email;
+    private String password;
+    private boolean vip;
+
+    public User(){
+    }
 
     public User(boolean vip) {
         this.vip = vip;
@@ -37,20 +40,12 @@ public class User {
         this.surname = surname;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setVip(boolean vip) {
+        this.vip = vip;
     }
 
     public boolean isVip() {
         return vip;
-    }
-
-    public void setVip(boolean vip) {
-        this.vip = vip;
     }
 
     public String getEmail() {
@@ -61,7 +56,13 @@ public class User {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -72,7 +73,7 @@ public class User {
             return false;
         }
         final User other = (User) obj;
-        if (this.userId != other.userId) {
+        if ((this.email == null) ? (other.email != null) : !this.email.equals(other.email)) {
             return false;
         }
         return true;
@@ -80,9 +81,8 @@ public class User {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 89 * hash + this.userId;
+        int hash = 7;
+        hash = 59 * hash + (this.email != null ? this.email.hashCode() : 0);
         return hash;
     }
-
 }

@@ -13,16 +13,19 @@ import java.util.Collection;
  */
 public interface TableManager {
 
-    boolean addTable();
+    boolean addTable(Table table);
 
-    boolean deleteTable();
+    boolean deleteTable(Table table);
 
-    boolean updateTable();
+    boolean updateTable(Table table);
 
     Table findTableByID(int id);
 
-    Collection<Table> freeTables();
+    //Collection<Table> freeTables();
 
-    Collection<Table> reservedTables();
+    //Collection<Table> reservedTables();
 
+    Collection<Table> freeTables(String date, int time, int duration);
+
+    Collection<Table> allTables();
 }
