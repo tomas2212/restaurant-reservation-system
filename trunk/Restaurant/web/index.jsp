@@ -1,24 +1,24 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="EN" lang="EN" dir="ltr">
 <head profile="http://gmpg.org/xfn/11">
-<title>Corporation</title>
+<title>Reservation System</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <meta http-equiv="imagetoolbar" content="no" />
 <link rel="stylesheet" href="styles/layout.css" type="text/css" />
 </head>
 <body id="top">
     <% String name = (String)session.getAttribute("name");
-            if(name == null || "".equals(name)) { %>
-    <div class="corner">
-        <p><a class="login" href="Registration.jsp">Log in</a> </p>
-    </div>
-     <% } else { %>
-     <p class="login"> Hello <%=session.getAttribute("name") %>! </p>
-    <p><a class="logout" href="${pageContext.request.contextPath}/LoginServlet?logout=true">Log out</a></p>
-    <% } %>
+       if(name == null || "".equals(name)) { %>
+        <div class="corner">
+            <p><a class="login" href="Registration.jsp">Log in</a> </p>
+        </div>
+       <% } else { %>
+        <p class="login"> Hello <%=session.getAttribute("name") %>! </p>
+        <p><a class="logout" href="${pageContext.request.contextPath}/LoginServlet?logout=true">Log out</a></p>
+        <% } %>
 <div class="wrapper col1">
   <div id="head">
     <h1><a href="#">The IT Restaurant</a></h1>
@@ -42,7 +42,7 @@
   <div id="gallery">
     <ul>
       <li class="placeholder" style="background-image:url(images/1.jpg);">Image Holder</li> <br/> <br/>
-      <li style="padding-left: 100px; text-indent:50px; font-size: 1.5em;">       M.Briskar : <strong> "best restaurant ever" </strong> </li>
+      <li style="padding-left: 100px; text-indent:50px; font-size: 1.5em;">M.Briskar : <strong> "best restaurant ever" </strong> </li>
     </ul>
     <div class="clear"></div>
   </div>
