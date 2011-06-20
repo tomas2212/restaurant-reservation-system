@@ -60,13 +60,13 @@ public class MyProfile extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         HttpSession session = request.getSession(true);
-        String name = (String) session.getAttribute("name");
+        String email = (String) session.getAttribute("email");
 
         Manager manager = (Manager)session.getAttribute("manager");
         UserManager userManager = manager.getUm();
 
-        request.setAttribute("user", userManager.findUser(name));
-        request.setAttribute("reservations", userManager.allUsersReservations(userManager.findUser(name)));
+        request.setAttribute("user", userManager.findUser(email));
+        request.setAttribute("reservations", userManager.allUsersReservations(userManager.findUser(email)));
         processRequest(request, response);
     } 
 

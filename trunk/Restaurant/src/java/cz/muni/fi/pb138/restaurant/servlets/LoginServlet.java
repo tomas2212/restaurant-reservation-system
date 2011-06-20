@@ -68,24 +68,29 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        Manager manager = new Manager();
+         HttpSession session = request.getSession(true);
+        Manager manager = (Manager)session.getAttribute("manager");
+        UserManager um = manager.getUm();
+
         if( request.getParameter("logout") !=null && "true".equals(request.getParameter("logout"))) {
-            HttpSession session = request.getSession(true);
+            session = request.getSession(true);
              session.setAttribute("name", "");
+             session.setAttribute("email", "");
 
         }
         else if("true".equals(request.getParameter("login"))){
-         String name = request.getParameter("name");
+         String email = request.getParameter("email");
          String password = request.getParameter("password");
          
 
-         if(manager.login(name, password) ) {
-             HttpSession session = request.getSession(true);
-             session.setAttribute("name", name);
+         if(manager.login(email, password)) {
+            session = request.getSession(true);
+             session.setAttribute("name", um.findUser(email).getFirstname());
+             session.setAttribute("email", email);
          }
         }
         else if ("true".equals(request.getParameter("register"))) {
-             HttpSession session = request.getSession(true);
+             session = request.getSession(true);
               String surname = request.getParameter("surname");
               String firstname = request.getParameter("firstname");
               String password = request.getParameter("password");
@@ -96,8 +101,16 @@ public class LoginServlet extends HttpServlet {
               user.setFirstname(firstname);
               user.setPassword(password);
               user.setVip(false);
-              UserManager um=  manager.getUm();
-              um.addUser(user);  
+
+              if(um.addUser(user)) {
+                  
+                  session.setAttribute("name", user.getFirstname());
+                  session.setAttribute("email", user.getEmail());
+              }else {
+                request.setAttribute("error", "Registration failed");
+                request.getRequestDispatcher("/Registration.jsp").forward(request, response);
+                return;
+              }
               } else {
                   request.setAttribute("error", "One of the field was empty");
                   request.getRequestDispatcher("/Registration.jsp").forward(request, response);
