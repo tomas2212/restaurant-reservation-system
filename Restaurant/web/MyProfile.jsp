@@ -46,17 +46,17 @@
 
           </li>
           <li class="last">
-            <h1>Your reservations :</h1> <!--
-             <c:forEach items="${reservations}" var="book">
+            <h1>Your reservations :</h1> 
+             <c:forEach items="${reservations}" var="reservation">
             <tr>
-                <td><c:out value="${book.isbn}"/></td>
-                <td><c:out value="${book.name}"/></td>
-                <td><c:out value="${book.author}"/></td>
-                <td><c:out value="${book.pageNumber}"/></td>
-                <td><c:out value="${book.owner}"/></td>
-                <td><c:out value="Book"/></td>
+                <td><c:out value="${reservation.reservationId}"/></td>
+                <td><c:out value="${reservation.date}"/></td>
+                <td><c:out value="${reservation.time}"/></td>
+                <td><c:out value="${reservation.duration}"/></td>
+                
+                <td><c:out value="Reservation"/></td>
             </tr>
-        </c:forEach> -->
+        </c:forEach> 
           </li>
         </ul>
         <div class="clear"></div>

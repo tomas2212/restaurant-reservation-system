@@ -36,15 +36,18 @@
 <div class="wrapper col4">
   <div id="container">
     <div id="content">
-      <h1>Who are you?</h1>
+      <h2>Who are you?</h2>
+       <% if( request.getAttribute("error")!=null) { %>
+         <FONT COLOR="red"> <h2> error: ${error}  </h2></FONT>
+       <% } %>
       <div class="homecontent">
         <ul>
           <li>
             <h1>In the case you are not registered, register here</h1>
             <form action="${pageContext.request.contextPath}/LoginServlet?register=true" method="post" >
-                Firstname : <input type="text" name="name" /> <br/> <br/>
-                Surname : <input type="text" name="name" /> <br/> <br/>
-                E-mail : <input type="text" name="name" /> <br/> <br/>
+                Firstname : <input type="text" name="firstname" /> <br/> <br/>
+                Surname : <input type="text" name="surname" /> <br/> <br/>
+                E-mail : <input type="text" name="email" /> <br/> <br/>
                 Password : <input type="password" name="password" /> <br/>
                 <input type="Submit" value="Register" />
              </form>

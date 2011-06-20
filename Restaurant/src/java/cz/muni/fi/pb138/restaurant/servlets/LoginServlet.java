@@ -5,6 +5,12 @@
 
 package cz.muni.fi.pb138.restaurant.servlets;
 
+import cz.muni.fi.pb138.restaurant.Manager;
+import cz.muni.fi.pb138.restaurant.TableManager;
+import cz.muni.fi.pb138.restaurant.TableManagerImpl;
+import cz.muni.fi.pb138.restaurant.User;
+import cz.muni.fi.pb138.restaurant.UserManager;
+import cz.muni.fi.pb138.restaurant.UserManagerImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -62,18 +68,42 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        Manager manager = new Manager();
         if( request.getParameter("logout") !=null && "true".equals(request.getParameter("logout"))) {
             HttpSession session = request.getSession(true);
              session.setAttribute("name", "");
 
         }
-
+        else if("true".equals(request.getParameter("login"))){
          String name = request.getParameter("name");
          String password = request.getParameter("password");
+         
 
-         if(/*manager.login(name, password) &&*/ "true".equals(request.getParameter("login")) ) {
+         if(manager.login(name, password) ) {
              HttpSession session = request.getSession(true);
              session.setAttribute("name", name);
+         }
+        }
+        else if ("true".equals(request.getParameter("register"))) {
+             HttpSession session = request.getSession(true);
+              String surname = request.getParameter("surname");
+              String firstname = request.getParameter("firstname");
+              String password = request.getParameter("password");
+              String email = request.getParameter("email");
+              if(surname != null && firstname != null && password != null && email!= null && !"".equals(surname) && !"".equals(firstname) && !"".equals(password) && !"".equals(email)) {
+              User user = new User();
+              user.setEmail(email);
+              user.setFirstname(firstname);
+              user.setPassword(password);
+              user.setVip(false);
+              UserManager um=  manager.getUm();
+              um.addUser(user);  
+              } else {
+                  request.setAttribute("error", "One of the field was empty");
+                  request.getRequestDispatcher("/Registration.jsp").forward(request, response);
+                  return;
+              }
+
          }
          request.getRequestDispatcher("/index.jsp").forward(request, response);
     }

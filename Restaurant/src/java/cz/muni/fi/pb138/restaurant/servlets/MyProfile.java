@@ -5,6 +5,7 @@
 
 package cz.muni.fi.pb138.restaurant.servlets;
 
+import cz.muni.fi.pb138.restaurant.Manager;
 import cz.muni.fi.pb138.restaurant.UserManager;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -61,8 +62,11 @@ public class MyProfile extends HttpServlet {
         HttpSession session = request.getSession(true);
         String name = (String) session.getAttribute("name");
 
-        UserManager manager = (UserManager)session.getAttribute("manager");
-        request.setAttribute("user", manager.findUser(name));
+        Manager manager = (Manager)session.getAttribute("manager");
+        UserManager userManager = manager.getUm();
+
+        request.setAttribute("user", userManager.findUser(name));
+        request.setAttribute("reservations", userManager.allUsersReservations(userManager.findUser(name)));
         processRequest(request, response);
     } 
 

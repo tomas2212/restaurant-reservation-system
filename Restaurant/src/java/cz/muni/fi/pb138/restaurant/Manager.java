@@ -46,6 +46,11 @@ public class Manager {
         this.tm = tm;
     }
 
+    public Manager () {
+        um=new UserManagerImpl();
+        tm=new TableManagerImpl();
+    }
+
     public TableManager getTm() {
         return tm;
     }
