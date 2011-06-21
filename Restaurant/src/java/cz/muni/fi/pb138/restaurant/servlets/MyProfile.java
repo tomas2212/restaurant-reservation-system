@@ -62,7 +62,8 @@ public class MyProfile extends HttpServlet {
         HttpSession session = request.getSession(true);
         String email = (String) session.getAttribute("email");
 
-        Manager manager = (Manager)session.getAttribute("manager");
+     //   Manager manager = (Manager)session.getAttribute("manager");
+        Manager manager = new Manager();
         UserManager userManager = manager.getUm();
 
         request.setAttribute("user", userManager.findUser(email));
