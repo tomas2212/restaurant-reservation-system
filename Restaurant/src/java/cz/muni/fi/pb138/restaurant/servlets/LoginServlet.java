@@ -87,6 +87,10 @@ public class LoginServlet extends HttpServlet {
             session = request.getSession(true);
              session.setAttribute("name", um.findUser(email).getFirstname());
              session.setAttribute("email", email);
+         }else {
+             request.setAttribute("error", "Bad login or password");
+             request.getRequestDispatcher("/Registration.jsp").forward(request, response);
+             return;
          }
         }
         else if ("true".equals(request.getParameter("register"))) {

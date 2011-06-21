@@ -55,7 +55,7 @@
           <li class="last">
             <h1>In the case you are registered, log in here :</h1>
             <form action="${pageContext.request.contextPath}/LoginServlet?login=true" method="post" >
-                Name : <input type="text" name="name" /> <br/> <br/>
+                Email : <input type="text" name="email" /> <br/> <br/>
                 Password : <input type="password" name="password" /> <br/>
                 <input type="Submit" value="Log in" />
              </form>
