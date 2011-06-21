@@ -22,6 +22,7 @@
 <div class="wrapper col1">
   <div id="head">
     <h1><a href="#">The IT Restaurant</a></h1>
+    <p>School project</p>
     <div id="topnav"> 
       <ul>
         <li><a class="active" href="index.jsp">Home</a></li>
@@ -64,7 +65,12 @@
 
             <h2>NEW RESERVATION SYSTEM</h2>
             <p>If you are logged, please feel free to try our new reservetion system for the tables in our restaurant.</p>
-            <p>It has won a price for the most useless project ever made :) </p>
+            <p>We are working hard to make a reservation much easier</p>
+            <% if(name != null && !"".equals(name)) { %>
+              <a href="Reservation.jsp" > Reserve now ! </a>
+              <% } else { %>
+              <a href="Registration.jsp" > Reserve now ! </a>
+              <% }%>
             
           </li>
           <li class="last">
@@ -77,23 +83,25 @@
         </ul>
         <div class="clear"></div>
       </div>
-      <p>Come visit us!</p>
+      
     </div>
     <div id="column">
       <div id="featured">
         <ul>
           <li>
-            <h2>Indonectetus facilis leonib</h2>
-            <p class="imgholder"><img src="images/demo/240x90.gif" alt="" /></p>
-            <p>Nullamlacus dui ipsum conseque loborttis non euisque morbi penas dapibulum orna. Urnaultrices quis curabitur phasellentesque congue magnis vestibulum quismodo nulla et feugiat. Adipisciniapellentum leo ut consequam ris felit elit id nibh sociis malesuada.</p>
+            <h2>We are a 5-star restaurant !</h2>
+            <p class="imgholder"><img src="images/star.jpg" alt="" /></p>
+            <p>We have achieved the fifth star for the newest menu we have prepared. </p>
+             <p>Now we know, it's a really good restaurant. </p>
             
           </li>
         </ul>
       </div>
       <div class="holder">
-        <div class="imgholder"><img src="images/demo/290x100.gif" alt="" /></div>
-        <p>Nullamlacus dui ipsum conseque loborttis non euisque morbi penas dapibulum orna.</p>
-        <p class="readmore"><a href="#">Read More &raquo;</a></p>
+        <div class="imgholder"><img src="images/hiring.jpg" alt="" /></div>
+        <p>We are looking for some new chefs and waitresses to join us.</p>
+        <p>If you are interested, feel free to contact us.</p>
+       
       </div>
     </div>
     <div class="clear"></div>
@@ -117,10 +125,9 @@
           <li>IT Restaurant</li>
           <li>Masaryk University</li>
           <li>Brno</li>
-          <li>Tel: xxxxx xxxxxxxxxx</li>
-          <li></li>
+          
           <li>Email: </li>
-          <li class="last">Fax: xxxxx xxxxxxxxxx </li>
+          <li class="last"></li>
         </ul>
       </div>
       <div class="clear"></div>

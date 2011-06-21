@@ -85,10 +85,9 @@
           <li>IT Restaurant</li>
           <li>Masaryk University</li>
           <li>Brno</li>
-          <li>Tel: xxxxx xxxxxxxxxx</li>
-          <li></li>
+         
           <li>Email: </li>
-          <li class="last">Fax: xxxxx xxxxxxxxxx </li>
+          <li class="last"> </li>
         </ul>
       </div>
       <div class="clear"></div>
