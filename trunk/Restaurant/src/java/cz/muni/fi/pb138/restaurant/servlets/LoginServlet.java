@@ -69,7 +69,7 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
          HttpSession session = request.getSession(true);
-        Manager manager = (Manager)session.getAttribute("manager");
+        Manager manager = new Manager();
         UserManager um = manager.getUm();
 
         if( request.getParameter("logout") !=null && "true".equals(request.getParameter("logout"))) {
