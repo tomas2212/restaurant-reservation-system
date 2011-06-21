@@ -12,7 +12,7 @@
 <body id="top">
     <% String name = (String)session.getAttribute("name");
        if(name == null || "".equals(name)) { %>
-        <div class="corner">
+        <div class="corner">a
             <p><a class="login" href="Registration.jsp">Log in</a> </p>
         </div>
        <% } else { %>
