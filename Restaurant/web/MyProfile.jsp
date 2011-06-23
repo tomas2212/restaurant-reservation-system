@@ -1,3 +1,5 @@
+<%@page import="cz.muni.fi.pb138.restaurant.Reservation"%>
+<%@page import="java.util.Collection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -27,7 +29,7 @@
         <li><a  href="index.jsp">Home</a></li>
         <% if(name != null && !"".equals(name)) { %>
         <li><a href="Reservation.jsp">Reservation</a></li>
-        <li><a class="active" href="MyProfile.jsp">My Profile</a></li>
+        <li><a class="active" href="${pageContext.request.contextPath}/MyProfile">My Profile</a></li>
         <% } %>
       </ul>
     </div>
@@ -41,7 +43,7 @@
           <li>
             <h1>Your details</h1>
             <p>Email : ${user.email} </p>
-            <p>First name : ${user.name} </p>
+            <p>First name : ${user.firstname} </p>
             <p>Surname : ${user.surname} </p>
 
           </li>
@@ -56,7 +58,11 @@
                 
                 <td><c:out value="Reservation"/></td>
             </tr>
-        </c:forEach> 
+        </c:forEach>
+                <% Collection<Reservation> col = (Collection<Reservation> ) request.getAttribute("reservations");
+                    if(col.isEmpty()) { %>
+                    <h2>You dont have any reservations</h2>
+                  <%  } %>
           </li>
         </ul>
         <div class="clear"></div>

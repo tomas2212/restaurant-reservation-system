@@ -37,7 +37,7 @@
                         <li><a  href="index.jsp">Home</a></li>
                         <% if (name != null && !"".equals(name)) {%>
                         <li><a class ="active" href="Reservation.jsp">Reservation</a></li>
-                        <li><a href="MyProfile.jsp">My Profile</a></li>
+                        <li><a href="${pageContext.request.contextPath}/MyProfile">My Profile</a></li>
                         <% }%>
                     </ul>
                 </div>
