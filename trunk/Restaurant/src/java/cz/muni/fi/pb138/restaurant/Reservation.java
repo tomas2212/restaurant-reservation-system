@@ -18,12 +18,12 @@ public class Reservation {
     private int time;
     private int duration;
 
-    protected Reservation(User user, Table table) {
+    public Reservation(User user, Table table) {
         this.user = user;
         this.table = table;
     }
 
-    protected Reservation(){
+    public Reservation(){
     }
 
     public String getDate() {

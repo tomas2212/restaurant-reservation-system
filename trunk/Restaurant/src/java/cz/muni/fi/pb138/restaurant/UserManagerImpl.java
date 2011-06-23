@@ -27,21 +27,48 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- *
- * @author xsvrcek1
+ * This class manages all operations with user.
+ * @author Jakub Papcun, Tomas Svrcek and team
  */
 public class UserManagerImpl implements UserManager {
 
     private User user;
 
+    /**
+     * Add user to directory USERS/
+     *
+     * @param user an user
+     * @return true if user was addes or false if not
+     */
+    public boolean addUser(User user) {
+        boolean d = createDirectory(user);
+        boolean u = usersReservationsXml(user);
+        boolean c = createXmlFile(user);
+        return (d && u && c);
+    }
+
+    /**
+     * Create directory in USERS/
+     *
+     * @param user an user
+     * @return true if directory was successful created or false if not
+     */
     public boolean createDirectory(User user) {
         boolean success = false;
+
+        String currentPath = this.getClass().getResource("/").getPath();
+        File initialFile = new File(currentPath);
+        for (int i = 0; i < 4; i++) {
+            initialFile = initialFile.getParentFile();
+        }
+        File file = new File(initialFile + "/USERS/" + user.getEmail());
+
         try {
-            if (new File("USERS/" + user.getEmail()).exists()) {
+            if (file.exists()) {
                 System.out.println("Directory with this name already exists !");
                 return false;
             } else {
-                success = (new File("USERS/" + user.getEmail())).mkdir();
+                success = file.mkdir();
                 if (success) {
                     System.out.println("Directory: " + user.getEmail() + " was created");
                     return true;
@@ -61,11 +88,252 @@ public class UserManagerImpl implements UserManager {
         }
     }
 
+    /**
+     * Create XML file in directory USERS/user/
+     *
+     * @param user an user
+     * @return true if XML file ws created or false if not
+     */
+    public boolean createXmlFile(User user) {
+        boolean success = false;
+
+        String currentPath = this.getClass().getResource("/").getPath();
+        File initialFile = new File(currentPath);
+        for (int i = 0; i < 4; i++) {
+            initialFile = initialFile.getParentFile();
+        }
+        File file = new File(initialFile + "/USERS/" + user.getEmail() + "/user.xml");
+
+        try {
+            if (file.exists()) {
+                System.out.println("XML Document with this name already exists !");
+                return false;
+            } else {
+                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+                //root element
+                Document doc = docBuilder.newDocument();
+                Element rootElement = doc.createElement("user");
+                doc.appendChild(rootElement);
+
+                //firstname element
+                Element firstname = doc.createElement("first_name");
+                firstname.appendChild(doc.createTextNode(user.getFirstname()));
+                rootElement.appendChild(firstname);
+
+                //surname element
+                Element surname = doc.createElement("surname");
+                surname.appendChild(doc.createTextNode(user.getSurname()));
+                rootElement.appendChild(surname);
+
+                //email element
+                Element email = doc.createElement("e-mail_id");
+                email.appendChild(doc.createTextNode(user.getEmail()));
+                rootElement.appendChild(email);
+
+                //password element
+                Element password = doc.createElement("password");
+                password.appendChild(doc.createTextNode(user.getPassword()));
+                rootElement.appendChild(password);
+
+                //vip element
+                Element vip = doc.createElement("vip");
+                vip.appendChild(doc.createTextNode(new Boolean(user.isVip()).toString()));
+                rootElement.appendChild(vip);
+
+                TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                Transformer transformer = transformerFactory.newTransformer();
+                DOMSource source = new DOMSource(doc);
+                StreamResult result = new StreamResult(file);
+                transformer.transform(source, result);
+
+                success = file.exists();
+                System.out.println("XML document was created.");
+                return success;
+            }
+
+        } catch (ParserConfigurationException pce) {
+            Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, pce);
+        } catch (TransformerException tfe) {
+            Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, tfe);
+        }
+        return success;
+    }
+
+    /**
+     * Create a XML file with user's reservations
+     *
+     * @param user an user
+     * @return true if XML user reservations was created or false if not
+     */
+    public boolean usersReservationsXml(User user) {
+        boolean success = false;
+
+        String currentPath = this.getClass().getResource("/").getPath();
+        File initialFile = new File(currentPath);
+        for (int i = 0; i < 4; i++) {
+            initialFile = initialFile.getParentFile();
+        }
+        File file = new File(initialFile + "/USERS/" + user.getEmail() + "/reservations.xml");
+
+        try {
+            if (file.exists()) {
+                System.out.println("XML Document with this name already exists !");
+                return false;
+            } else {
+                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+                //root element
+                Document doc = docBuilder.newDocument();
+                Element rootElement = doc.createElement("reservations");
+                rootElement.setAttribute("user_id", user.getEmail());
+                doc.appendChild(rootElement);
+
+
+                TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                Transformer transformer = transformerFactory.newTransformer();
+                DOMSource source = new DOMSource(doc);
+                StreamResult result = new StreamResult(file);
+                transformer.transform(source, result);
+
+                success = file.exists();
+                System.out.println("XML document was created.");
+                return success;
+            }
+
+        } catch (ParserConfigurationException pce) {
+            Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, pce);
+        } catch (TransformerException tfe) {
+            Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, tfe);
+        }
+        return success;
+    }
+
+    /**
+     * Delete user from USERS/
+     *
+     * @param user an user
+     * @return true if user was deleted or false if not
+     */
+    public boolean deleteUser(User user) {
+        deleteAllUsersReservations(user);
+        deleteXmlFile(user, "user.xml");
+        deleteXmlFile(user, "reservations.xml");
+        return deleteDirectory(user);
+    }
+
+    /**
+     * Delete xml file from USERS/user/
+     *
+     * @param user an user
+     * @param xmlFile name of xml file
+     * @return true if XML file was deleted or false if not
+     */
+    public boolean deleteXmlFile(User user, String xmlFile) {
+        boolean success = false;
+
+        String currentPath = this.getClass().getResource("/").getPath();
+        File initialFile = new File(currentPath);
+        for (int i = 0; i < 4; i++) {
+            initialFile = initialFile.getParentFile();
+        }
+        File file = new File(initialFile + "/USERS/" + user.getEmail() + "/" + xmlFile);
+
+        try {
+            if (file.exists()) {
+                success = file.delete();
+                System.out.println("USERS/" + user.getEmail() + "/" + xmlFile + " was removed.");
+                return success;
+            } else {
+                System.out.println("XML Document with this name doesn't exists !");
+                return false;
+            }
+        } catch (Exception ex) {
+        }
+        return success;
+    }
+
+    /**
+     * Delete all users's reservations [delete all xml files(reservations) from USERS/user/]
+     *
+     * @param user an user
+     * @return true if all user's reservations was deleted or false if not
+     */
+    public boolean deleteAllUsersReservations(User user) {
+        String currentPath = this.getClass().getResource("/").getPath();
+        File initialFile = new File(currentPath);
+        for (int i = 0; i < 4; i++) {
+            initialFile = initialFile.getParentFile();
+        }
+        File file = new File(initialFile + "/RESERVATIONS/");
+        File[] files = file.listFiles();
+        boolean success = false;
+
+        for (int i = 0; i < (files.length - 1); i++) {
+            try {
+                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+                Document doc = null;
+                try {
+                    doc = docBuilder.parse(new File(file.getAbsolutePath()+ "/" + files[i].getName()));
+                } catch (SAXException ex) {
+                    Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                NodeList res = doc.getElementsByTagName("reservation");
+                NodeList userIds = doc.getElementsByTagName("user_id");
+                for (int j = 0; j < userIds.getLength(); j++) {
+                    Element id = (Element) userIds.item(j);
+                    String idStr = id.getTextContent();
+                    if (idStr.equals(user.getEmail())) {
+                        id.getParentNode().getParentNode().removeChild(res.item(j));
+                        j--;
+                        try {
+                            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                            Transformer transformer = transformerFactory.newTransformer();
+                            DOMSource source = new DOMSource(doc);
+                            StreamResult result = new StreamResult(new File(file.getAbsolutePath() + "/" + files[i].getName()));
+                            transformer.transform(source, result);
+                        } catch (Exception ex) {
+                            return false;
+                        }
+                        success = new File(file.getAbsolutePath() + "/" + files[i].getName()).exists();
+                        System.out.println("Reservation was removed.");
+                    }
+                }
+            } catch (ParserConfigurationException ex) {
+                Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                return false;
+            }
+        }
+        return success;
+    }
+
+    /**
+     * Delete directory from USERS/
+     *
+     * @param user an user
+     * @return true if directory was deleted or false if not
+     */
     public boolean deleteDirectory(User user) {
         boolean success = false;
+
+        String currentPath = this.getClass().getResource("/").getPath();
+        File initialFile = new File(currentPath);
+        for (int i = 0; i < 4; i++) {
+            initialFile = initialFile.getParentFile();
+        }
+        File file = new File(initialFile + "/USERS/" + user.getEmail());
+
         try {
-            if (new File("USERS/" + user.getEmail()).exists()) {
-                success = new File("USERS/" + user.getEmail()).delete();
+            if (file.exists()) {
+                success = file.delete();
                 System.out.println("Directory " + user.getEmail() + " was removed !");
                 return success;
             } else {
@@ -73,7 +341,6 @@ public class UserManagerImpl implements UserManager {
                 return false;
             }
         } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
         } finally {
             if (success) {
                 return true;
@@ -83,36 +350,44 @@ public class UserManagerImpl implements UserManager {
         }
     }
 
-    public boolean addUser(User user) {
-        return (createDirectory(user) && usersReservationsXml(user) && createXmlFile(user));
-    }
-
-    public boolean deleteUser(User user) {
-        deleteAllUsersReservations(user);
-        deleteXmlFile(user, "user.xml");
-        deleteXmlFile(user, "reservations.xml");
-        deleteDirectory(user);
-        return true;
-    }
-
+    /**
+     * Update file user.xml, his reservations must be the same
+     *
+     * @param user an user
+     * @return true if user was updated or false if not
+     */
     public boolean updateUser(User user) {
-        deleteUser(user);
-        return addUser(user);
+        boolean userDeletion = deleteXmlFile(user, "user.xml");
+        return (userDeletion && createXmlFile(user));
     }
 
+    /**
+     * Find user by email address
+     *
+     * @param email e-mail string
+     * @return user when email exists or null if doesn't
+     */
     public User findUser(String email) {
-        if (new File("USERS/" + email).exists()) {
+
+        String currentPath = this.getClass().getResource("/").getPath();
+        File initialFile = new File(currentPath);
+        for (int i = 0; i < 4; i++) {
+            initialFile = initialFile.getParentFile();
+        }
+        File file = new File(initialFile + "/USERS/" + email);
+
+        if (file.exists()) {
             try {
                 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
                 Document doc = null;
                 try {
-                    doc = docBuilder.parse(new File("USERS/" + email + "/user.xml"));
-                } catch (SAXException ex) {
-                    Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    doc = docBuilder.parse(new File(file.getAbsolutePath() + "/user.xml"));
+                } catch (SAXException se) {
+                    Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, se);
+                } catch (IOException ioe) {
+                    Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ioe);
                 }
                 Element userElement = doc.getDocumentElement();
 
@@ -154,208 +429,46 @@ public class UserManagerImpl implements UserManager {
         }
     }
 
-    public boolean createXmlFile(User user) {
-
-        boolean success = false;
-
-        try {
-            if (new File("USERS/" + user.getEmail() + "/user.xml").exists()) {
-                System.out.println("XML Document with this name already exists !");
-                return false;
-            } else {
-                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
-                //root element
-                Document doc = docBuilder.newDocument();
-                Element rootElement = doc.createElement("user");
-                doc.appendChild(rootElement);
-                /*rootElement.setAttribute("xsi:noNameSpaceSchemaLocation", "userSchema.xsd");
-                rootElement.setAttribute("xmlns", "");
-                rootElement.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");*/
-
-//                //set attribute to staff element
-//                Attr attr = doc.createAttribute("xsi:noNamespaceSchemaLocation");
-//                attr.setValue("userSchema.xsd");
-//                rootElement.setAttributeNode(attr);
-
-//                //set attribute to staff element
-//                Attr attr1 = doc.createAttribute("xlmns");
-//                attr.setValue("");
-//                rootElement.setAttributeNode(attr);
-//
-//                //set attribute to staff element
-//                Attr attr2 = doc.createAttribute("xmlns:xsi");
-//                attr.setValue("http://www.w3.org/2001/XMLSchema-instance");
-//                rootElement.setAttributeNode(attr);
-//   
-                //firstname element
-                Element firstname = doc.createElement("first_name");
-                firstname.appendChild(doc.createTextNode(user.getFirstname()));
-                rootElement.appendChild(firstname);
-
-                //surname element
-                Element surname = doc.createElement("surname");
-                surname.appendChild(doc.createTextNode(user.getSurname()));
-                rootElement.appendChild(surname);
-
-                //email element
-                Element email = doc.createElement("e-mail_id");
-                email.appendChild(doc.createTextNode(user.getEmail()));
-                rootElement.appendChild(email);
-
-                //password element
-                Element password = doc.createElement("password");
-                password.appendChild(doc.createTextNode(user.getPassword()));
-                rootElement.appendChild(password);
-
-                //vip element
-                Element vip = doc.createElement("vip");
-                vip.appendChild(doc.createTextNode(new Boolean(user.isVip()).toString()));
-                rootElement.appendChild(vip);
-
-                //write the content into xml file
-                TransformerFactory transformerFactory = TransformerFactory.newInstance();
-                Transformer transformer = transformerFactory.newTransformer();
-                DOMSource source = new DOMSource(doc);
-                StreamResult result = new StreamResult(new File("USERS/" + user.getEmail() + "/user.xml"));
-                transformer.transform(source, result);
-
-                success = new File("USERS/" + user.getEmail() + "/user.xml").exists();
-                System.out.println("XML document was created.");
-                return success;
-            }
-
-        } catch (ParserConfigurationException pce) {
-            pce.printStackTrace();
-        } catch (TransformerException tfe) {
-            tfe.printStackTrace();
-        }
-        return success;
-    }
-
-    public boolean deleteXmlFile(User user, String xmlFile) {
-        boolean success = false;
-
-        try {
-            if (new File("USERS/" + user.getEmail() + "/" + xmlFile).exists()) {
-                success = new File("USERS/" + user.getEmail() + "/" + xmlFile).delete();
-                System.out.println("XML document was removed.");
-                return success;
-            } else {
-                System.out.println("XML Document with this name doesn't exists !");
-                return false;
-            }
-        } catch (Exception ex) {
-        }
-        return success;
-    }
-
-    public boolean deleteAllUsersReservations(User user) {
-        File file = new File("RESERVATIONS/");
-        File[] files = file.listFiles();
-        boolean success = false;
-
-        for (int i = 0; i < (files.length - 1); i++) {
-            try {
-                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
-                Document doc = null;
-                try {
-                    doc = docBuilder.parse(new File("RESERVATIONS/" + files[i].getName()));
-                } catch (SAXException ex) {
-                    Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                NodeList res = doc.getElementsByTagName("reservation");
-                NodeList userIds = doc.getElementsByTagName("user_id");
-                for (int j = 0; j < userIds.getLength(); j++) {
-                    Element id = (Element) userIds.item(j);
-                    String idStr = id.getTextContent();
-                    if (idStr.equals(user.getEmail())) {
-
-                        id.getParentNode().getParentNode().removeChild(res.item(j));
-                        try {
-                            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-                            Transformer transformer = transformerFactory.newTransformer();
-                            DOMSource source = new DOMSource(doc);
-                            StreamResult result = new StreamResult(new File("RESERVATIONS/" + files[i].getName()));
-                            transformer.transform(source, result);
-                        } catch (Exception ex) {
-                            return false;
-                        }
-                        success = new File("RESERVATIONS/" + files[i].getName()).exists();
-                        System.out.println("Reservation was removed.");
-                    }
-                }
-            } catch (ParserConfigurationException ex) {
-                Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return success;
-    }
-
+    /**
+     * It returns collection of all users
+     *
+     * @return collection of users
+     */
     public Collection<User> allUsers() {
+
+        String currentPath = this.getClass().getResource("/").getPath();
+        File initialFile = new File(currentPath);
+        for (int i = 0; i < 4; i++) {
+            initialFile = initialFile.getParentFile();
+        }
+
         Set<User> users = new HashSet<User>();
         User user = new User();
-        File file = new File("USERS/");
+        File file = new File(initialFile + "/USERS/");
         File[] files = file.listFiles();
-        String[] names = null;
         UserManager um = new UserManagerImpl();
-
         for (int i = 0; i < files.length; i++) {
-            names[i] = files[i].getName();
-        }
-        for (int i = 0; i < names.length; i++) {
-            user = um.findUser(names[i]);
+            user = um.findUser(files[i].getName());
             users.add(user);
         }
         return users;
     }
 
-    public boolean usersReservationsXml(User user) {
-        boolean success = false;
-
-        try {
-            if (new File("USERS/" + user.getEmail() + "/reservations.xml").exists()) {
-                System.out.println("XML Document with this name already exists !");
-                return false;
-            } else {
-                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
-                //root element
-                Document doc = docBuilder.newDocument();
-                Element rootElement = doc.createElement("reservations");
-                rootElement.setAttribute("user_id", user.getEmail());
-                doc.appendChild(rootElement);
-
-
-                TransformerFactory transformerFactory = TransformerFactory.newInstance();
-                Transformer transformer = transformerFactory.newTransformer();
-                DOMSource source = new DOMSource(doc);
-                StreamResult result = new StreamResult(new File("USERS/" + user.getEmail() + "/reservations.xml"));
-                transformer.transform(source, result);
-
-                success = new File("USERS/" + user.getEmail() + "/reservations.xml").exists();
-                System.out.println("XML document was created.");
-                return success;
-            }
-
-        } catch (ParserConfigurationException pce) {
-            pce.printStackTrace();
-        } catch (TransformerException tfe) {
-            tfe.printStackTrace();
-        }
-        return success;
-    }
-
+    /**
+     * It returns all users's reservations
+     *
+     * @param user an user
+     * @return collection of user's reservations
+     */
     public Collection<Reservation> allUsersReservations(User user) {
         TableManager tm = new TableManagerImpl();
-        File file = new File("USERS/" + user.getEmail() + "/reservations.xml");
+
+        String currentPath = this.getClass().getResource("/").getPath();
+        File initialFile = new File(currentPath);
+        for (int i = 0; i < 4; i++) {
+            initialFile = initialFile.getParentFile();
+        }
+        File file = new File(initialFile + "/USERS/" + user.getEmail() + "/reservations.xml");
         Set<Reservation> reservations = new HashSet<Reservation>();
 
         try {

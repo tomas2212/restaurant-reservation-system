@@ -8,9 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
@@ -28,22 +26,37 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
+ * Class which contains table manager methods
  *
- * @author xsvrcek1
+ * @author Jakub Papcun, Tomas Svrcek & team
  */
 public class TableManagerImpl implements TableManager {
 
     //private Table table;
     //private Collection<Table> tables;
 
+    /**
+     * Create directory
+     *
+     * @param table a table
+     * @return true if directory was successful created or false if not
+     */
     public boolean createDirectory(Table table) {
+
+        String currentPath = this.getClass().getResource("/").getPath();
+        File initialFile = new File(currentPath);
+        for (int i = 0; i < 4; i++) {
+            initialFile = initialFile.getParentFile();
+        }
+        File file = new File(initialFile + "/TABLES/" + table.getTableId());
+
         boolean success = false;
         try {
-            if (new File("TABLES/" + table.getTableId()).exists()) {
+            if (file.exists()) {
                 System.out.println("Directory with this name already exists !");
                 return false;
             } else {
-                success = (new File("TABLES/" + table.getTableId())).mkdir();
+                success = file.mkdir();
                 if (success) {
                     System.out.println("Directory: " + table.getTableId() + " was created");
                     return true;
@@ -63,13 +76,26 @@ public class TableManagerImpl implements TableManager {
         }
     }
 
+    /**
+     * Delete from directory from TABLES/
+     *
+     * @param table a table
+     * @return true if directory was deleted or false if not
+     */
     public boolean deleteDirectory(Table table) {
 
         boolean success = false;
 
+        String currentPath = this.getClass().getResource("/").getPath();
+        File initialFile = new File(currentPath);
+        for (int i = 0; i < 4; i++) {
+            initialFile = initialFile.getParentFile();
+        }
+        File file = new File(initialFile + "/TABLES/" + table.getTableId());
+
         try {
-            if (new File("TABLES/" + table.getTableId()).exists()) {
-                success = new File("TABLES/" + table.getTableId()).delete();
+            if (file.exists()) {
+                success = file.delete();
                 System.out.println("Directory " + table.getTableId() + " was removed !");
                 return success;
             } else {
@@ -87,27 +113,59 @@ public class TableManagerImpl implements TableManager {
         }
     }
 
+    /**
+     * Add table to directory TABLES
+     *
+     * @param table a table
+     * @return true if table was added or false if not
+     */
     public boolean addTable(Table table) {
         return (createDirectory(table) && createXmlFile(table));
     }
 
+    /**
+     * Delete table from directory TABLES/
+     *
+     * @param table
+     * @return true if table was deleted or false if not
+     */
     public boolean deleteTable(Table table) {
         return (deleteXmlFile(table) && deleteDirectory(table));
     }
 
+    /**
+     * Delete xml file and create xml file(not directory)
+     *
+     * @param table
+     * @return true if delete and create was successful or false if not
+     */
     public boolean updateTable(Table table) {
         return (deleteTable(table) && addTable(table));
     }
 
+    /**
+     * Find table by ID and return table
+     *
+     * @param id  table id
+     * @return table if exists or null if doesn't
+     */
     public Table findTableByID(int id) {
-        if (new File("TABLES/" + id).exists()) {
+
+        String currentPath = this.getClass().getResource("/").getPath();
+        File initialFile = new File(currentPath);
+        for (int i = 0; i < 4; i++) {
+            initialFile = initialFile.getParentFile();
+        }
+        File file = new File(initialFile + "/TABLES/" + id);
+
+        if (file.exists()) {
             try {
                 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
                 Document doc = null;
 
                 try {
-                    doc = docBuilder.parse(new File("TABLES/" + id + "/table.xml"));
+                    doc = docBuilder.parse(new File(file.getAbsolutePath() + "/table.xml"));
                 } catch (SAXException ex) {
                     Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
@@ -147,12 +205,25 @@ public class TableManagerImpl implements TableManager {
         }
     }
 
+    /**
+     * Create XML file with param table
+     *
+     * @param table a table
+     * @return true if XML document was created or false if not
+     */
     public boolean createXmlFile(Table table) {
+
+        String currentPath = this.getClass().getResource("/").getPath();
+        File initialFile = new File(currentPath);
+        for (int i = 0; i < 4; i++) {
+            initialFile = initialFile.getParentFile();
+        }
+        File file = new File(initialFile + "/TABLES/" + table.getTableId() + "/table.xml");
 
         boolean success = false;
 
         try {
-            if (new File("TABLES/" + table.getTableId() + "/table.xml").exists()) {
+            if (file.exists()) {
                 System.out.println("XML Document with this name already exists !");
                 return false;
             } else {
@@ -198,10 +269,10 @@ public class TableManagerImpl implements TableManager {
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();
                 DOMSource source = new DOMSource(doc);
-                StreamResult result = new StreamResult(new File("TABLES/" + table.getTableId() + "/table.xml"));
+                StreamResult result = new StreamResult(file);
                 transformer.transform(source, result);
 
-                success = new File("TABLES/" + table.getTableId() + "/table.xml").exists();
+                success = file.exists();
                 System.out.println("XML document was created.");
                 return success;
             }
@@ -212,11 +283,25 @@ public class TableManagerImpl implements TableManager {
         return success;
     }
 
+    /**
+     * Delete XML from directory TABLES/table/
+     *
+     * @param table
+     * @return true if xml was deleted or false if not
+     */
     public boolean deleteXmlFile(Table table) {
+
+        String currentPath = this.getClass().getResource("/").getPath();
+        File initialFile = new File(currentPath);
+        for (int i = 0; i < 4; i++) {
+            initialFile = initialFile.getParentFile();
+        }
+        File file = new File(initialFile + "/TABLES/" + table.getTableId() + "/table.xml");
+
         boolean success = false;
         try {
-            if (new File("TABLES/" + table.getTableId() + "/table.xml").exists()) {
-                success = new File("TABLES/" + table.getTableId() + "/table.xml").delete();
+            if (file.exists()) {
+                success = file.delete();
                 System.out.println("XML document was removed.");
                 return success;
             } else {
@@ -228,10 +313,23 @@ public class TableManagerImpl implements TableManager {
         return success;
     }
 
+    /**
+     * It returns collection of all tables
+     *
+     * @return all tables
+     */
     public Collection<Table> allTables() {
-        Collection<Table> tables = new HashSet<Table>();
+        
+        String currentPath = this.getClass().getResource("/").getPath();
+        File initialFile = new File(currentPath);
+        for (int i = 0; i < 4; i++) {
+            initialFile = initialFile.getParentFile();
+        }
+        
+        
+        Collection<Table> tables = new ArrayList<Table>();
         Table table = new Table();
-        File file = new File("TABLES/");
+        File file = new File(initialFile + "/TABLES/");
         File[] files = file.listFiles();
         TableManager tm = new TableManagerImpl();
 
@@ -243,7 +341,17 @@ public class TableManagerImpl implements TableManager {
         return tables;
     }
 
-    public Collection<Table> freeTables(String date, int time, int duration) {
+    /**
+     * It returns a collection of free tables
+     *
+     * @param date
+     * @param time
+     * @param duration
+     * @return all free tables
+     * @throws IllegalArgumentException if date is null
+     * @throws IllegalArgumentException if time or date is negative
+     */
+    public Collection<Table> freeTables(User user, String date, int time, int duration) {
         if (date == null) {
             throw new IllegalArgumentException("Parameter date cannot be null");
         }
@@ -255,15 +363,23 @@ public class TableManagerImpl implements TableManager {
         }
         Collection<Table> allTables = new HashSet<Table>();
         allTables = allTables();
+        Collection<Table> freeTables = new HashSet<Table>();
 
-        if (new File("RESERVATIONS/" + date + ".xml").exists()) {
+        String currentPath = this.getClass().getResource("/").getPath();
+        File initialFile = new File(currentPath);
+        for (int i = 0; i < 4; i++) {
+            initialFile = initialFile.getParentFile();
+        }
+        File file = new File(initialFile + "/RESERVATIONS/" + date + ".xml");
+
+        if (file.exists()) {
             try {
                 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
                 Document doc = null;
                 try {
-                    doc = docBuilder.parse(new File("RESERVATIONS/" + date + ".xml"));
+                    doc = docBuilder.parse(file);
                 } catch (SAXException ex) {
                     Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
@@ -295,6 +411,15 @@ public class TableManagerImpl implements TableManager {
                 Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
                 return null;
             }
+        }
+
+        if (!user.isVip()) {
+            for (Table t : allTables) {
+                if (!t.isVip()) {
+                    freeTables.add(t);
+                }
+            }
+            return freeTables;
         }
         return allTables;
 

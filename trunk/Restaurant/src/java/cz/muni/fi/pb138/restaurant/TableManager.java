@@ -21,11 +21,7 @@ public interface TableManager {
 
     Table findTableByID(int id);
 
-    //Collection<Table> freeTables();
-
-    //Collection<Table> reservedTables();
-
-    Collection<Table> freeTables(String date, int time, int duration);
+    Collection<Table> freeTables(User user, String date, int time, int duration);
 
     Collection<Table> allTables();
 }

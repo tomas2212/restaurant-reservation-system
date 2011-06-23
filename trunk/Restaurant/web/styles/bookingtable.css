@@ -1,0 +1,97 @@
+/* 
+    Document   : bookingtable
+    Created on : Jun 22, 2011, 3:15:55 PM
+    Author     : Robert Zahradnicek
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+.table_container{
+    background-color: gainsboro;
+}
+
+.monday{
+    border-color: #3D73B1;
+    border-style: solid;
+    border-width: thin;
+    
+    font-size: 15px;
+    font-style: normal;
+    font-weight: bold;
+}
+
+.tuesday{
+    border-color: #3D73B1;
+    border-style: solid;
+    border-width: thin;
+    
+    font-size: 15px;
+    font-style: normal;
+    font-weight: bold;
+}
+
+.wednesday{
+    border-color: #3D73B1;
+    border-style: solid;
+    border-width: thin;
+    
+    font-size: 15px;
+    font-style: normal;
+    font-weight: bold;
+}
+
+.thursday{
+    border-color: #3D73B1;
+    border-style: solid;
+    border-width: thin;
+    
+    font-size: 15px;
+    font-style: normal;
+    font-weight: bold;
+}
+
+.friday{
+    border-color: #3D73B1;
+    border-style: solid;
+    border-width: thin;
+    
+    font-size: 15px;
+    font-style: normal;
+    font-weight: bold;
+}
+
+.saturday{  
+    border-color: #3D73B1;
+    border-style: solid;
+    border-width: thin;
+    
+    font-size: 15px;
+    font-style: normal;
+    font-weight: bold;
+}
+
+.sunday{
+    border-color: #3D73B1;
+    border-style: solid;
+    border-width: thin;
+    
+    font-size: 15px;
+    font-style: normal;
+    font-weight: bold;
+}
+
+.bookingtable {
+    padding-top: 1px;
+}
+
+.reservation {
+}
