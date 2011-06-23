@@ -1,3 +1,4 @@
+<%@page import="java.util.Collection"%>
 <%@page import="cz.muni.fi.pb138.restaurant.Reservation"%>
 <%@page import="cz.muni.fi.pb138.restaurant.User"%>
 <%@page import="java.util.HashSet"%>
@@ -20,6 +21,8 @@
     </head>
     <body id="top">
         <% String name = (String) session.getAttribute("name");
+        String date =(String)request.getAttribute("date");
+            if(date== null) {date ="23.6";}
             if (name == null || "".equals(name)) {%>
         <div class="corner">
             <p><a class="login" href="Registration.jsp">Log in</a> </p>
@@ -73,6 +76,8 @@
                                 <td class="sunday">Sunday 08:00 - 22:00</td>
                             </tr>
                         </table>
+                        <p> Selected day :  <%= date%> </p>
+                        
                         <div class="bookingtable">
                             <table>
                                 <tr>
@@ -85,6 +90,7 @@
                                 </tr>
                                 <%
                                     Manager manager = new Manager();
+                                    UserManager um = manager.getUm();
                                     TableManager tm = manager.getTm();
                                     ArrayList<Table> tables = (ArrayList<Table>) tm.allTables();
                                     User user = (User) session.getAttribute("user");
@@ -108,9 +114,17 @@
                                                 times[j] = 0;
                                             } else {
                                                 bgColor = "lightgreen";
+
+                                                Collection<Table> free =tm.freeTables(um.findUser((String)session.getAttribute("email")), date, j, 60);
+                                                if(free.contains(tables.get(i))) {
+                                                   value = "o";
+                                                   times[j] = 1;
+                                                } else {
+                                                bgColor = "red";
                                                 value = "o";
-                                                times[j] = 1;
+                                                times[j] = 0; }
                                             }
+                                            
                                     %> <td style="background-color:<%= bgColor%>"><%= value%></td>
                                     <% }%>
                                 </tr>
@@ -128,28 +142,31 @@
                         </div>
                     </div>
                     <div class="reservation">
-                        <form action="${pageContext.request.contextPath}/ReservationServlet?book=true" method="POST" >
-                            Firstname : <input type="text" name="firstname" value="" /> <br/> <br/>
-                            Surname : <input type="text" name="surname" value="" /> <br/> <br/>
-                            E-mail : <input type="text" name="email" value=""/> <br/> <br/>
-
+                        <br/><br/><br/> <br/>
+                        <form action="${pageContext.request.contextPath}/ReservationServlet" method="post" >
+                            Day :<input type="text" name="day" value="" />  Month :<input type="text" name="month" /> <input type="Submit" value="Check the day" />
+                            </form> <br/>
+                        <form action="${pageContext.request.contextPath}/ReservationServlet?book=true&date=<%= date%>" method="POST" >
+                            
+                            Reserve as : <br/> <br/>
+                           <!-- Firstname : <input type="text" name="firstname" value="" /> <br/> <br/>
+                            Surname : <input type="text" name="surname" value="" /> <br/> <br/> -->
+                            
+                            Table :
                             <select name="table">
                                 <% for (int i = 0; i < tables.size(); i++) {%>
                                 <option value=<%= tables.get(i).getTableId()%>><%= tables.get(i).getTableId()%></option>
                                 <% }%>
                             </select>
 
-                            <select name="date">
-                                <option></option>
-                            </select>
-
+                            Hour (for 60 minutes) :
                             <select name="time_hour">
 
                                 <% List<String> s = new ArrayList<String>();
-                                    for (int i = 0; i < times.length; i++) {
-                                        if (times[i] == 1) {
+                                    for (int i = 8; i < times.length-2; i++) {
+                                       
                                             s.add(Integer.toString(i));
-                                        }
+                                        
                                     }%>
 
                                 <%if (s.isEmpty()) {%>
@@ -161,13 +178,11 @@
                                 <% }%>
                             </select> 
                             <select name="time_minute">
-                                <%if (times.length > 0) {%>
+                                
                                 <option value="0">00</option>
-                                <option value="30">30</option>
-                                <% } else {%>
-                                <option value="none"> -- </option>
-                                <% }%>
+                                
                             </select> <br/>
+
                             <input type="Submit" name="book" value="Book"/>
                         </form>
                     </div>

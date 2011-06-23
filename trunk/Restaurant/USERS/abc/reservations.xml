@@ -1,1 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><reservations user_id="abc"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><reservations user_id="abc"><reservation><reservation_id>61</reservation_id><date>23.6</date><time>600</time><duration>60</duration><table_id>2</table_id></reservation><reservation><reservation_id>61</reservation_id><date>23.6</date><time>600</time><duration>60</duration><table_id>2</table_id></reservation></reservations>

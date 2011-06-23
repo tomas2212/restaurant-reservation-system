@@ -6,9 +6,11 @@
 package cz.muni.fi.pb138.restaurant.servlets;
 
 import cz.muni.fi.pb138.restaurant.Manager;
+import cz.muni.fi.pb138.restaurant.Reservation;
 import cz.muni.fi.pb138.restaurant.UserManager;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collection;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -67,7 +69,8 @@ public class MyProfile extends HttpServlet {
         UserManager userManager = manager.getUm();
 
         request.setAttribute("user", userManager.findUser(email));
-        request.setAttribute("reservations", userManager.allUsersReservations(userManager.findUser(email)));
+        Collection<Reservation> reservations = userManager.allUsersReservations(userManager.findUser(email));
+        request.setAttribute("reservations", reservations);
         request.getRequestDispatcher("/MyProfile.jsp").forward(request, response);
     } 
 
