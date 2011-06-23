@@ -334,9 +334,12 @@ public class TableManagerImpl implements TableManager {
         TableManager tm = new TableManagerImpl();
 
         for (int i = 0; i < files.length; i++) {
-            int number = Integer.parseInt(files[i].getName());
-            table = tm.findTableByID(number);
-            tables.add(table);
+            try {
+                int number = Integer.parseInt(files[i].getName());
+                table = tm.findTableByID(number);
+                tables.add(table);
+            }catch(NumberFormatException nfe){
+            }
         }
         return tables;
     }
