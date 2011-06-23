@@ -33,13 +33,7 @@ public class ReservationServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getParameter("logout") != null && "true".equals(request.getParameter("logout"))) {
-            HttpSession session = request.getSession(true);
-            session.setAttribute("name", "");
-            session.invalidate();
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
-            return;
-        }
+       
         HttpSession session = request.getSession(false);
 
         Manager manager = new Manager();
