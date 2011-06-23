@@ -68,7 +68,7 @@ public class MyProfile extends HttpServlet {
 
         request.setAttribute("user", userManager.findUser(email));
         request.setAttribute("reservations", userManager.allUsersReservations(userManager.findUser(email)));
-        processRequest(request, response);
+        request.getRequestDispatcher("/MyProfile.jsp").forward(request, response);
     } 
 
     /** 
@@ -81,6 +81,13 @@ public class MyProfile extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        HttpSession session = request.getSession(true);
+        String email = (String) session.getAttribute("email");
+        Manager manager = new Manager();
+        UserManager userManager = manager.getUm();
+
+        request.setAttribute("user", userManager.findUser(email));
+        request.setAttribute("reservations", userManager.allUsersReservations(userManager.findUser(email)));
         processRequest(request, response);
     }
 

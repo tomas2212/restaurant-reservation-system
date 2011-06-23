@@ -80,13 +80,14 @@ public class LoginServlet extends HttpServlet {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
 
-            if (/*manager.login(email, password)*/ true) {
+            if (manager.login(email, password) ) {
                 session = request.getSession(true);
-               // session.setAttribute("name", um.findUser(email).getFirstname());
-               // session.setAttribute("surname", um.findUser(email).getSurname());
-                session.setAttribute("email", email);
+                session.setAttribute("name", um.findUser(email).getFirstname());
+                session.setAttribute("surname", um.findUser(email).getSurname());
+                session.setAttribute("email",email);
+                //session.setAttribute("email", email);
                 // vymazat
-                 session.setAttribute("name", email);
+                 //session.setAttribute("name", email);
                 //vymazat
             } else {
                 request.setAttribute("error", "Bad login or password");
