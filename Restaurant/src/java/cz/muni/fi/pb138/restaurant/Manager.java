@@ -12,8 +12,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,22 +31,29 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
+ * Class which manages all operations with reservations.
  *
- * @author xsvrcek1
+ * @author Jakub Papcun, Tomas Svrcek and team
  */
 public class Manager {
 
     private UserManager um;
     private TableManager tm;
 
+    /**
+     * Constructor
+     *
+     * @param um userManager
+     * @param tm tableManager
+     */
     public Manager(UserManager um, TableManager tm) {
         this.um = um;
         this.tm = tm;
     }
 
-    public Manager () {
-        um=new UserManagerImpl();
-        tm=new TableManagerImpl();
+    public Manager() {
+        um = new UserManagerImpl();
+        tm = new TableManagerImpl();
     }
 
     public TableManager getTm() {
@@ -59,9 +64,12 @@ public class Manager {
         return um;
     }
 
-    /*public Reservation newReservation(User user, Table table) {
-    return new Reservation(user, table);
-    }*/
+    /**
+     * Create reservation
+     *
+     * @param reservation reservation
+     * @return true if reservation was created or false if not
+     */
     public void createReservation(Reservation reservation) {
         reservation.setReservationId(getId());
         createXmlFile(reservation);
@@ -69,20 +77,33 @@ public class Manager {
 
     }
 
+    /**
+     * Create XML file
+     *
+     * @param reservation reservation
+     * @return true if XML file was created or false if not
+     */
     public boolean createXmlFile(Reservation reservation) {
         boolean success = false;
         try {
             Document doc = null;
             Element childElement = null;
 
-            if (new File("RESERVATIONS/" + reservation.getDate() + ".xml").exists()) {
+            String currentPath = this.getClass().getResource("/").getPath();
+            File initialFile = new File(currentPath);
+            for (int i = 0; i < 4; i++) {
+                initialFile = initialFile.getParentFile();
+            }
+            File file = new File(initialFile + "/RESERVATIONS/" + reservation.getDate() + ".xml");
 
-                String filepath = "RESERVATIONS/" + reservation.getDate() + ".xml";
+            if (file.exists()) {
+
+
                 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
                 try {
-                    doc = docBuilder.parse(filepath);
+                    doc = docBuilder.parse(file);
                 } catch (SAXException ex) {
                     Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
@@ -142,10 +163,10 @@ public class Manager {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("RESERVATIONS/" + reservation.getDate() + ".xml"));
+            StreamResult result = new StreamResult(file);
             transformer.transform(source, result);
 
-            success = new File("RESERVATIONS/" + reservation.getDate() + ".xml").exists();
+            success = file.exists();
             System.out.println("XML document was created.");
             return success;
 
@@ -155,13 +176,29 @@ public class Manager {
         return success;
     }
 
+    /**
+     * Create user's reservation in directory USERS/user/
+     *
+     * @param reservation a reservation
+     * @param user an user
+     * @return true if reservation was created or false if not
+     */
     public boolean createUsersReservation(Reservation reservation, User user) {
         boolean success = false;
         Document doc = null;
-        try {
-            if (new File("USERS/" + user.getEmail() + "/reservations.xml").exists()) {
 
-                String filepath = "USERS/" + user.getEmail() + "/reservations.xml";
+        String currentPath = this.getClass().getResource("/").toString();
+        currentPath = currentPath.substring(6, currentPath.length());
+        File initialFile = new File(currentPath);
+        for (int i = 0; i < 4; i++) {
+            initialFile = initialFile.getParentFile();
+        }
+        File file = new File(initialFile + "/USERS/" + user.getEmail() + "/reservations.xml");
+
+        try {
+            if (file.exists()) {
+
+                String filepath = file.getAbsolutePath();
                 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
@@ -208,10 +245,10 @@ public class Manager {
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();
                 DOMSource source = new DOMSource(doc);
-                StreamResult result = new StreamResult(new File("USERS/" + user.getEmail() + "/reservations.xml"));
+                StreamResult result = new StreamResult(file);
                 transformer.transform(source, result);
 
-                success = new File("USERS/" + user.getEmail() + "/reservations.xml").exists();
+                success = file.exists();
                 System.out.println("XML document was created.");
             }
         } catch (Exception ex) {
@@ -219,7 +256,15 @@ public class Manager {
         return success;
     }
 
-    public boolean login(String email, String password) {
+    /**
+     * Control password before logging in
+     *
+     * @param email string
+     * @param password string
+     * @return true if password is correct or false if not
+     * @throws IllegalArgumentException if email or password is null
+     */
+    public boolean login(String email, String password) throws IOException {
         if (email == null) {
             throw new IllegalArgumentException("Parameter email cannot be null!");
         }
@@ -227,14 +272,22 @@ public class Manager {
             throw new IllegalArgumentException("Parameter password cannot be null!");
         }
         boolean success = false;
-        if (new File("USERS/" + email).exists()) {
+
+        String currentPath = this.getClass().getResource("/").getPath();
+        File initialFile = new File(currentPath);
+        for (int i = 0; i < 4; i++) {
+            initialFile = initialFile.getParentFile();
+        }
+        File file = new File(initialFile + "/USERS/" + email);
+
+        if (file.exists()) {
             try {
                 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
                 Document doc = null;
                 try {
-                    doc = docBuilder.parse(new File("USERS/" + email + "/user.xml"));
+                    doc = docBuilder.parse(new File(file + file.separator + "user.xml"));
                 } catch (SAXException ex) {
                     Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
@@ -256,8 +309,19 @@ public class Manager {
         return success;
     }
 
+    /**
+     * Delete reservation from directory RESERVATIONS/
+     *
+     * @param reservationId a reservation ID
+     * @return true if resrvation was deleted or false if not
+     */
     public boolean deleteReservation(int reservationId) {
-        File file = new File("RESERVATIONS/");
+        String currentPath = this.getClass().getResource("/").getPath();
+        File initialFile = new File(currentPath);
+        for (int i = 0; i < 4; i++) {
+            initialFile = initialFile.getParentFile();
+        }
+        File file = new File(initialFile + "/RESERVATIONS/");
         File[] files = file.listFiles();
 
         for (int i = 0; i < files.length; i++) {
@@ -267,7 +331,7 @@ public class Manager {
 
                 Document doc = null;
                 try {
-                    doc = docBuilder.parse(new File("RESERVATIONS/" + files[i].getName()));
+                    doc = docBuilder.parse(new File(file.getAbsolutePath() + "/" + files[i].getName()));
                 } catch (SAXException ex) {
                     Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
@@ -287,12 +351,12 @@ public class Manager {
                             TransformerFactory transformerFactory = TransformerFactory.newInstance();
                             Transformer transformer = transformerFactory.newTransformer();
                             DOMSource source = new DOMSource(doc);
-                            StreamResult result = new StreamResult(new File("RESERVATIONS/" + files[i].getName()));
+                            StreamResult result = new StreamResult(new File(file.getAbsolutePath() + "/" + files[i].getName()));
                             transformer.transform(source, result);
                         } catch (Exception ex) {
                         }
 
-                        boolean exists = new File("RESERVATIONS/" + files[i].getName()).exists();
+                        boolean exists = new File(file.getAbsolutePath() + "/" + files[i].getName()).exists();
                         boolean removed = removeUsersReservation(reservationId, userId);
                         System.out.println("Reservation was removed.");
                         return (exists && removed);
@@ -308,7 +372,21 @@ public class Manager {
         return false;
     }
 
+    /**
+     * Delete user's reservation
+     *
+     * @param reservationId a reservation ID
+     * @param userId an user ID
+     * @return true if reservation was deleted from user or false if not
+     */
     public boolean removeUsersReservation(int reservationId, String userId) {
+
+        String currentPath = this.getClass().getResource("/").getPath();
+        File initialFile = new File(currentPath);
+        for (int i = 0; i < 4; i++) {
+            initialFile = initialFile.getParentFile();
+        }
+        File file = new File(initialFile + "/USERS/" + userId + "/reservations.xml");
 
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -316,7 +394,7 @@ public class Manager {
 
             Document doc = null;
             try {
-                doc = docBuilder.parse(new File("USERS/" + userId + "/reservations.xml"));
+                doc = docBuilder.parse(file);
             } catch (SAXException ex) {
                 Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
@@ -324,20 +402,20 @@ public class Manager {
             }
             NodeList reservations = doc.getElementsByTagName("reservation");
             NodeList resIds = doc.getElementsByTagName("reservation_id");
-            for(int i = 0; i<resIds.getLength(); i++){
+            for (int i = 0; i < resIds.getLength(); i++) {
                 Element resId = (Element) resIds.item(i);
-                if( Integer.parseInt(resId.getTextContent()) == reservationId ){
+                if (Integer.parseInt(resId.getTextContent()) == reservationId) {
                     resId.getParentNode().getParentNode().removeChild(reservations.item(i));
                     try {
-                            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-                            Transformer transformer = transformerFactory.newTransformer();
-                            DOMSource source = new DOMSource(doc);
-                            StreamResult result = new StreamResult(new File("USERS/" + userId + "/reservations.xml"));
-                            transformer.transform(source, result);
-                        } catch (Exception ex) {
-                        }
+                        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                        Transformer transformer = transformerFactory.newTransformer();
+                        DOMSource source = new DOMSource(doc);
+                        StreamResult result = new StreamResult(file);
+                        transformer.transform(source, result);
+                    } catch (Exception ex) {
+                    }
 
-                        return (new File("USERS/" + userId + "/reservations.xml").exists());
+                    return (file.exists());
                 }
             }
 
@@ -347,10 +425,22 @@ public class Manager {
         return false;
     }
 
+    /**
+     * Get id from RESERVATIONS/id.dat
+     *
+     * @return number of ID or -1 if doesn't exist
+     */
     public int getId() {
         int id = 0;
+
+        String currentPath = this.getClass().getResource("/").getPath();
+        File initialFile = new File(currentPath);
+        for (int i = 0; i < 4; i++) {
+            initialFile = initialFile.getParentFile();
+        }
         try {
-            File file = new File("RESERVATIONS/id.dat");
+
+            File file = new File(initialFile + "/RESERVATIONS/id.dat");
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             id = Integer.parseInt(br.readLine());
             br.close();
