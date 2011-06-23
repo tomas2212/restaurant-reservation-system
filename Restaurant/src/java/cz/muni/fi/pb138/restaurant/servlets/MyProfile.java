@@ -68,6 +68,14 @@ public class MyProfile extends HttpServlet {
         Manager manager = new Manager();
         UserManager userManager = manager.getUm();
 
+        String rid=request.getParameter("reservationId");
+        if(rid == null) {rid = "0";}
+        int reservationId = Integer.parseInt(rid);
+
+        if(reservationId!=0) {
+            manager.deleteReservation(reservationId);
+        }
+
         request.setAttribute("user", userManager.findUser(email));
         Collection<Reservation> reservations = userManager.allUsersReservations(userManager.findUser(email));
         request.setAttribute("reservations", reservations);
@@ -88,6 +96,13 @@ public class MyProfile extends HttpServlet {
         String email = (String) session.getAttribute("email");
         Manager manager = new Manager();
         UserManager userManager = manager.getUm();
+        String rid=request.getParameter("reservationId");
+        if(rid == null) {rid = "0";}
+        int reservationId = Integer.parseInt(rid);
+
+        if(reservationId!=0) {
+            manager.deleteReservation(reservationId);
+        }
 
         request.setAttribute("user", userManager.findUser(email));
         request.setAttribute("reservations", userManager.allUsersReservations(userManager.findUser(email)));
