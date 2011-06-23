@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <xsd:element name="reservations" >
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="reservation" type="reservationType" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+            <xsd:attribute name="date" use="required">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:pattern value="20[1-9][0-9]-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])" />
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    
+    <xsd:complexType name="reservationType">
+        <xsd:all>
+            <xsd:element name="reservation_id" type="xsd:integer" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="time" type="xsd:integer" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="duration" type="xsd:integer" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="user_id" type="userType" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="table_id" type="xsd:integer" minOccurs="1" maxOccurs="1" />
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:simpleType name="userType">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[A-Za-z0-9_]+([-+.'][A-Za-z0-9_]+)*@[A-Za-z0-9_]+([-.][A-Za-z0-9_]+)*\.[A-Za-z0-9_]+([-.][A-Za-z0-9_]+)*"  />
+        </xsd:restriction>
+    </xsd:simpleType>
+
+
+
+</xsd:schema>

@@ -93,10 +93,14 @@
                                     UserManager um = manager.getUm();
                                     TableManager tm = manager.getTm();
                                     ArrayList<Table> tables = (ArrayList<Table>) tm.allTables();
-                                    User user = (User) session.getAttribute("user");
+                                    User user = new User(true);
                                     String bgColor;
                                     String value;
                                     int[] times = new int[24];
+                                    
+                                    for(int i=0; i<24; i++){
+                                        
+                                    }
                                 %> 
                                 <% for (int i = 0; i < tables.size(); i++) {%>
                                 <tr>

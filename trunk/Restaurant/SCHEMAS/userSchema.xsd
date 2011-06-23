@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <xsd:element name="user" >
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="first_name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                <xsd:element name="surname" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                <xsd:element name="e-mail_id" type="e-mail_id_type" minOccurs="1" maxOccurs="1"/>
+                <xsd:element name="password" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                <xsd:element name="vip" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:simpleType name="e-mail_id_type">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[A-Za-z0-9_]+([-+.'][A-Za-z0-9_]+)*@[A-Za-z0-9_]+([-.][A-Za-z0-9_]+)*\.[A-Za-z0-9_]+([-.][A-Za-z0-9_]+)*"  />
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    
+
+</xsd:schema>

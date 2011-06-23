@@ -12,22 +12,23 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.Servlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
+import javax.xml.XMLConstants;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -79,7 +80,6 @@ public class Manager {
         reservation.setReservationId(getId());
         createXmlFile(reservation);
         createUsersReservation(reservation, reservation.getUser());
-
     }
 
     /**
@@ -171,9 +171,11 @@ public class Manager {
             StreamResult result = new StreamResult(file);
             transformer.transform(source, result);
 
+            boolean valid = validation(file, new File(initialFile + "/SCHEMAS/reservationsSchema.xsd"));
+
             success = file.exists();
             System.out.println("XML document was created.");
-            return success;
+            return (valid && success);
 
         } catch (ParserConfigurationException pce) {
         } catch (TransformerException tfe) {
@@ -253,7 +255,9 @@ public class Manager {
                 StreamResult result = new StreamResult(file);
                 transformer.transform(source, result);
 
-                success = file.exists();
+                boolean valid = validation(file, new File(initialFile + "/SCHEMAS/usersReservationsSchema.xsd"));
+
+                success = (valid && file.exists());
                 System.out.println("XML document was created.");
             }
         } catch (Exception ex) {
@@ -329,49 +333,50 @@ public class Manager {
         File file = new File(initialFile + "/RESERVATIONS/");
         File[] files = file.listFiles();
 
-        for (int i = 0; i < files.length; i++) {
-            try {
-                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
-                Document doc = null;
+        for (int i = 1; i < files.length; i++) {
+            if (files[i].getName().matches("20[0-9][0-9]-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1]).xml")) {
                 try {
-                    doc = docBuilder.parse(new File(file.getAbsolutePath() + "/" + files[i].getName()));
-                } catch (SAXException ex) {
-                    Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                    DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-                NodeList res = doc.getElementsByTagName("reservation");
-                NodeList reservationIds = doc.getElementsByTagName("reservation_id");
-                NodeList userIds = doc.getElementsByTagName("user_id");
-                for (int j = 0; j < reservationIds.getLength(); j++) {
-                    Element id = (Element) reservationIds.item(j);
-                    int idInt = Integer.parseInt(id.getTextContent());
-                    if (idInt == reservationId) {
-                        String userId = userIds.item(j).getTextContent();
-                        id.getParentNode().getParentNode().removeChild(res.item(j));
-                        try {
-                            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-                            Transformer transformer = transformerFactory.newTransformer();
-                            DOMSource source = new DOMSource(doc);
-                            StreamResult result = new StreamResult(new File(file.getAbsolutePath() + "/" + files[i].getName()));
-                            transformer.transform(source, result);
-                        } catch (Exception ex) {
-                        }
-
-                        boolean exists = new File(file.getAbsolutePath() + "/" + files[i].getName()).exists();
-                        boolean removed = removeUsersReservation(reservationId, userId);
-                        System.out.println("Reservation was removed.");
-                        return (exists && removed);
-
+                    Document doc = null;
+                    try {
+                        doc = docBuilder.parse(new File(file.getAbsolutePath() + "/" + files[i].getName()));
+                    } catch (SAXException ex) {
+                        Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
                     }
+
+                    NodeList res = doc.getElementsByTagName("reservation");
+                    NodeList reservationIds = doc.getElementsByTagName("reservation_id");
+                    NodeList userIds = doc.getElementsByTagName("user_id");
+                    for (int j = 0; j < reservationIds.getLength(); j++) {
+                        Element id = (Element) reservationIds.item(j);
+                        int idInt = Integer.parseInt(id.getTextContent());
+                        if (idInt == reservationId) {
+                            String userId = userIds.item(j).getTextContent();
+                            id.getParentNode().getParentNode().removeChild(res.item(j));
+                            try {
+                                TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                                Transformer transformer = transformerFactory.newTransformer();
+                                DOMSource source = new DOMSource(doc);
+                                StreamResult result = new StreamResult(new File(file.getAbsolutePath() + "/" + files[i].getName()));
+                                transformer.transform(source, result);
+                            } catch (Exception ex) {
+                            }
+                            boolean valid = validation(new File(initialFile + "/RESERVATIONS/" + files[i].getName()), new File(initialFile + "/SCHEMAS/reservationsSchema.xsd"));
+
+                            boolean exists = new File(file.getAbsolutePath() + "/" + files[i].getName()).exists();
+                            boolean removed = removeUsersReservation(reservationId, userId);
+                            System.out.println("Reservation was removed.");
+                            return (valid && exists && removed);
+                        }
+                    }
+                } catch (ParserConfigurationException ex) {
+                    Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    return false;
                 }
-
-
-            } catch (ParserConfigurationException ex) {
-                Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return false;
@@ -405,6 +410,7 @@ public class Manager {
             } catch (IOException ex) {
                 Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
+            boolean valid = false;
             NodeList reservations = doc.getElementsByTagName("reservation");
             NodeList resIds = doc.getElementsByTagName("reservation_id");
             for (int i = 0; i < resIds.getLength(); i++) {
@@ -417,10 +423,12 @@ public class Manager {
                         DOMSource source = new DOMSource(doc);
                         StreamResult result = new StreamResult(file);
                         transformer.transform(source, result);
+                        valid = validation(file, new File(initialFile + "/SCHEMAS/usersReservationsSchema.xsd"));
                     } catch (Exception ex) {
                     }
 
-                    return (file.exists());
+
+                    return (valid && file.exists());
                 }
             }
 
@@ -459,5 +467,28 @@ public class Manager {
         } catch (IOException ioe) {
         }
         return id;
+    }
+
+    /**
+     * Validates created XML document
+     * @param xml document to be validated
+     * @param xsd XML schema to validate with
+     * @return true if valid
+     */
+    public boolean validation(File xml, File xsd) {
+        SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        Source schemaFile = new StreamSource(xsd);
+        try {
+            Schema schema = factory.newSchema(schemaFile);
+            Validator validator = schema.newValidator();
+            validator.validate(new StreamSource(xml));
+            return true;
+        } catch (SAXException ex) {
+            Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, "Document is invalid", ex);
+            return false;
+        } catch (IOException ex) {
+            Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, "No such file", ex);
+            return false;
+        }
     }
 }
