@@ -12,14 +12,20 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -148,9 +154,12 @@ public class UserManagerImpl implements UserManager {
                 StreamResult result = new StreamResult(file);
                 transformer.transform(source, result);
 
+                boolean valid = validation(file, new File(initialFile + "/SCHEMAS/userSchema.xsd"));
+
                 success = file.exists();
                 System.out.println("XML document was created.");
-                return success;
+
+                return (valid && success);
             }
 
         } catch (ParserConfigurationException pce) {
@@ -191,16 +200,17 @@ public class UserManagerImpl implements UserManager {
                 rootElement.setAttribute("user_id", user.getEmail());
                 doc.appendChild(rootElement);
 
-
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();
                 DOMSource source = new DOMSource(doc);
                 StreamResult result = new StreamResult(file);
                 transformer.transform(source, result);
 
+                boolean valid = validation(file, new File(initialFile + "/SCHEMAS/usersReservationsSchema.xsd"));
+
                 success = file.exists();
                 System.out.println("XML document was created.");
-                return success;
+                return (valid && success);
             }
 
         } catch (ParserConfigurationException pce) {
@@ -272,44 +282,46 @@ public class UserManagerImpl implements UserManager {
         boolean success = false;
 
         for (int i = 0; i < (files.length - 1); i++) {
-            try {
-                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
-                Document doc = null;
+            if (files[i].getName().matches("20[0-9][0-9]-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1]).xml")) {
                 try {
-                    doc = docBuilder.parse(new File(file.getAbsolutePath()+ "/" + files[i].getName()));
-                } catch (SAXException ex) {
-                    Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                    DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-                NodeList res = doc.getElementsByTagName("reservation");
-                NodeList userIds = doc.getElementsByTagName("user_id");
-                for (int j = 0; j < userIds.getLength(); j++) {
-                    Element id = (Element) userIds.item(j);
-                    String idStr = id.getTextContent();
-                    if (idStr.equals(user.getEmail())) {
-                        id.getParentNode().getParentNode().removeChild(res.item(j));
-                        j--;
-                        try {
-                            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-                            Transformer transformer = transformerFactory.newTransformer();
-                            DOMSource source = new DOMSource(doc);
-                            StreamResult result = new StreamResult(new File(file.getAbsolutePath() + "/" + files[i].getName()));
-                            transformer.transform(source, result);
-                        } catch (Exception ex) {
-                            return false;
-                        }
-                        success = new File(file.getAbsolutePath() + "/" + files[i].getName()).exists();
-                        System.out.println("Reservation was removed.");
+                    Document doc = null;
+                    try {
+                        doc = docBuilder.parse(new File(file.getAbsolutePath() + "/" + files[i].getName()));
+                    } catch (SAXException ex) {
+                        Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
                     }
+
+                    NodeList res = doc.getElementsByTagName("reservation");
+                    NodeList userIds = doc.getElementsByTagName("user_id");
+                    for (int j = 0; j < userIds.getLength(); j++) {
+                        Element id = (Element) userIds.item(j);
+                        String idStr = id.getTextContent();
+                        if (idStr.equals(user.getEmail())) {
+                            id.getParentNode().getParentNode().removeChild(res.item(j));
+                            j--;
+                            try {
+                                TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                                Transformer transformer = transformerFactory.newTransformer();
+                                DOMSource source = new DOMSource(doc);
+                                StreamResult result = new StreamResult(new File(file.getAbsolutePath() + "/" + files[i].getName()));
+                                transformer.transform(source, result);
+                            } catch (Exception ex) {
+                                return false;
+                            }
+                            success = new File(file.getAbsolutePath() + "/" + files[i].getName()).exists();
+                            System.out.println("Reservation was removed.");
+                        }
+                    }
+                } catch (ParserConfigurationException ex) {
+                    Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    return false;
                 }
-            } catch (ParserConfigurationException ex) {
-                Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (Exception ex) {
-                return false;
             }
         }
         return success;
@@ -448,8 +460,10 @@ public class UserManagerImpl implements UserManager {
         File[] files = file.listFiles();
         UserManager um = new UserManagerImpl();
         for (int i = 0; i < files.length; i++) {
-            user = um.findUser(files[i].getName());
-            users.add(user);
+            if (files[i].getName().matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")) {
+                user = um.findUser(files[i].getName());
+                users.add(user);
+            }
         }
         return users;
     }
@@ -513,5 +527,22 @@ public class UserManagerImpl implements UserManager {
             return null;
         }
         return Collections.unmodifiableCollection(reservations);
+    }
+
+    public boolean validation(File xml, File xsd) {
+        SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        Source schemaFile = new StreamSource(xsd);
+        try {
+            Schema schema = factory.newSchema(schemaFile);
+            Validator validator = schema.newValidator();
+            validator.validate(new StreamSource(xml));
+            return true;
+        } catch (SAXException ex) {
+            Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, "Document is invalid", ex);
+            return false;
+        } catch (IOException ex) {
+            Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, "No such file", ex);
+            return false;
+        }
     }
 }

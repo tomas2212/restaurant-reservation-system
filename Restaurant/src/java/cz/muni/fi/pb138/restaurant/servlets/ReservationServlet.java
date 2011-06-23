@@ -11,7 +11,6 @@ import cz.muni.fi.pb138.restaurant.TableManager;
 import cz.muni.fi.pb138.restaurant.User;
 import cz.muni.fi.pb138.restaurant.UserManager;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

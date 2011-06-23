@@ -11,14 +11,20 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -34,7 +40,6 @@ public class TableManagerImpl implements TableManager {
 
     //private Table table;
     //private Collection<Table> tables;
-
     /**
      * Create directory
      *
@@ -235,21 +240,6 @@ public class TableManagerImpl implements TableManager {
                 Element rootElement = doc.createElement("table");
                 doc.appendChild(rootElement);
 
-//                //set attribute to staff element
-//                Attr attr = doc.createAttribute("xsi:noNamespaceSchemaLocation");
-//                attr.setValue("userSchema.xsd");
-//                rootElement.setAttributeNode(attr);
-
-//                //set attribute to staff element
-//                Attr attr1 = doc.createAttribute("xlmns");
-//                attr.setValue("");
-//                rootElement.setAttributeNode(attr);
-//
-//                //set attribute to staff element
-//                Attr attr2 = doc.createAttribute("xmlns:xsi");
-//                attr.setValue("http://www.w3.org/2001/XMLSchema-instance");
-//                rootElement.setAttributeNode(attr);
-//
                 //table_id element
                 Element table_id = doc.createElement("table_id");
                 table_id.appendChild(doc.createTextNode(Integer.toString(table.getTableId())));
@@ -272,9 +262,11 @@ public class TableManagerImpl implements TableManager {
                 StreamResult result = new StreamResult(file);
                 transformer.transform(source, result);
 
+                boolean valid = validation(file, new File(initialFile + "/SCHEMAS/tableSchema.xsd"));
+
                 success = file.exists();
                 System.out.println("XML document was created.");
-                return success;
+                return (valid && success);
             }
 
         } catch (ParserConfigurationException pce) {
@@ -319,14 +311,14 @@ public class TableManagerImpl implements TableManager {
      * @return all tables
      */
     public Collection<Table> allTables() {
-        
+
         String currentPath = this.getClass().getResource("/").getPath();
         File initialFile = new File(currentPath);
         for (int i = 0; i < 4; i++) {
             initialFile = initialFile.getParentFile();
         }
-        
-        
+
+
         Collection<Table> tables = new ArrayList<Table>();
         Table table = new Table();
         File file = new File(initialFile + "/TABLES/");
@@ -427,4 +419,22 @@ public class TableManagerImpl implements TableManager {
         return allTables;
 
     }
+
+    public boolean validation(File xml, File xsd) {
+        SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        Source schemaFile = new StreamSource(xsd);
+        try {
+            Schema schema = factory.newSchema(schemaFile);
+            Validator validator = schema.newValidator();
+            validator.validate(new StreamSource(xml));
+            return true;
+        } catch (SAXException ex) {
+            Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, "Document is invalid", ex);
+            return false;
+        } catch (IOException ex) {
+            Logger.getLogger(UserManagerImpl.class.getName()).log(Level.SEVERE, "No such file", ex);
+            return false;
+        }
+    }
+
 }

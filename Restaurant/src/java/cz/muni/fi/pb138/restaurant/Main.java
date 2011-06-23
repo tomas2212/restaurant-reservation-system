@@ -55,7 +55,7 @@ public class Main {
         User user3 = new User(false);
         user3.setEmail("lukas@gmail.com");
         user3.setFirstname("Lukas");
-        user3.setSurname("Sakul");
+        user3.setSurname("Kasko");
         user3.setPassword("mani");
 
         //user and table adding-------------------------
@@ -65,6 +65,7 @@ public class Main {
         tmi.addTable(table2);
         umi.addUser(user3);
         tmi.addTable(table3);*/
+        
 
         //login test---------------------------------------------------
         /*boolean jj = manager.login("tomas2212@gmail.com", "muni");
@@ -119,6 +120,8 @@ public class Main {
         manager.createReservation(reservation4);
         manager.createReservation(reservation5);*/
 
+
+        //System.out.println(tmi.allTables().size());
         //free tables test----------------------------------------------------------
         /*Object[] t = tmi.freeTables(umi.findUser("jakub.papcun@gmail.com"),"2011-06-16", 660, 2).toArray();
         Table tt = (Table) t[0];
@@ -134,7 +137,9 @@ public class Main {
         //System.out.println(umi.allUsersReservations(umi.findUser("jakub.papcun@gmail.com")).size());
 
         //delete reservation test-----------------------------------------------
-        //manager.deleteReservation(80);
+        //manager.deleteReservation(67);
+
+        //System.out.println(manager.validation(new File("RESERVATIONS/2011-06-16.xml"), new File("SCHEMAS/reservationsSchema.xsd")));
 
         //all users
         //System.out.println(umi.allUsers().size());
