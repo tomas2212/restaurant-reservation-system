@@ -167,6 +167,7 @@ public class ReservationServlet extends HttpServlet {
         if (month == 10 && day >31) {return false;}
         if (month == 11 && day >30) {return false;}
         if (month == 12 && day >31) {return false;}
+        if(month >12) {return false;}
 
         return true;
     }
