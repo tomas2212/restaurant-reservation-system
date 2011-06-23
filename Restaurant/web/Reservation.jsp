@@ -1,4 +1,3 @@
-<%@page import="java.util.Collection"%>
 <%@page import="cz.muni.fi.pb138.restaurant.Reservation"%>
 <%@page import="cz.muni.fi.pb138.restaurant.User"%>
 <%@page import="java.util.HashSet"%>
@@ -84,23 +83,38 @@
                                     <td>16:00</td><td>17:00</td><td>18:00</td><td>19:00</td><td>20:00</td>
                                     <td>21:00</td><td>22:00</td><td>23:00</td>
                                 </tr>
-                               <%
+                                <%
                                     Manager manager = new Manager();
                                     TableManager tm = manager.getTm();
-                                    Collection<Table> tables = ( List<Table> ) tm.allTables();
+                                    ArrayList<Table> tables = (ArrayList<Table>) tm.allTables();
+                                    User user = (User) session.getAttribute("user");
                                     String bgColor;
                                     String value;
                                     int[] times = new int[24];
                                 %> 
-                               
+                                <% for (int i = 0; i < tables.size(); i++) {%>
                                 <tr>
-                                    
-                                    <td></td>
-                                    
-                                    <td></td>
-                                    
+                                    <% if (tables.get(i).isVip()) {
+                                            bgColor = "orange";
+                                        } else {
+                                            bgColor = "white";
+                                        }
+                                    %>
+                                    <td style="background-color:<%= bgColor%>"><%= tables.get(i).getTableId()%> ( <%= tables.get(i).getPlaces()%> )</td>
+                                    <% for (int j = 0; j < 24; j++) {
+                                            if (j < 8 || j > 21) {
+                                                bgColor = "lightgrey";
+                                                value = "x";
+                                                times[j] = 0;
+                                            } else {
+                                                bgColor = "lightgreen";
+                                                value = "o";
+                                                times[j] = 1;
+                                            }
+                                    %> <td style="background-color:<%= bgColor%>"><%= value%></td>
+                                    <% }%>
                                 </tr>
-                                
+                                <% }%>
 
                             </table>
                             <table>
@@ -120,7 +134,9 @@
                             E-mail : <input type="text" name="email" value=""/> <br/> <br/>
 
                             <select name="table">
-                               
+                                <% for (int i = 0; i < tables.size(); i++) {%>
+                                <option value=<%= tables.get(i).getTableId()%>><%= tables.get(i).getTableId()%></option>
+                                <% }%>
                             </select>
 
                             <select name="date">
@@ -128,15 +144,29 @@
                             </select>
 
                             <select name="time_hour">
+
+                                <% List<String> s = new ArrayList<String>();
+                                    for (int i = 0; i < times.length; i++) {
+                                        if (times[i] == 1) {
+                                            s.add(Integer.toString(i));
+                                        }
+                                    }%>
+
+                                <%if (s.isEmpty()) {%>
                                 <option value="none"> -- </option>
+                                <% }%>
+
+                                <% for (int i = 0; i < s.size(); i++) {%>
+                                <option value=<%= s.get(i)%>><%= s.get(i)%></option>
+                                <% }%>
                             </select> 
                             <select name="time_minute">
-                                
+                                <%if (times.length > 0) {%>
                                 <option value="0">00</option>
                                 <option value="30">30</option>
-                                
+                                <% } else {%>
                                 <option value="none"> -- </option>
-                                
+                                <% }%>
                             </select> <br/>
                             <input type="Submit" name="book" value="Book"/>
                         </form>
