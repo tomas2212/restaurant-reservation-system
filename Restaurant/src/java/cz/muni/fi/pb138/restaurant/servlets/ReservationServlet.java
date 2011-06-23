@@ -51,8 +51,16 @@ public class ReservationServlet extends HttpServlet {
         }
 
          if (request.getParameter("month") != null && request.getParameter("day") != null && !"".equals(request.getParameter("month")) &&!"".equals(request.getParameter("day"))  ) {
+             int month = Integer.parseInt(request.getParameter("month")) ;
+             int day = Integer.parseInt(request.getParameter("day")) ;
+             if(checkDate(day,month)) {
               request.setAttribute("date", request.getParameter("day") + "." + request.getParameter("month") );
               request.getRequestDispatcher("/Reservation.jsp").forward(request, response); return;
+             } else {
+                 request.setAttribute("error", "Date was wrong");
+                request.getRequestDispatcher("/Reservation.jsp").forward(request, response);
+                return;
+             }
 
          }
          String book = request.getParameter("book");
@@ -145,4 +153,21 @@ public class ReservationServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private boolean checkDate(int day, int month) {
+        if (month == 1 && day >31) {return false;}
+        if (month == 2 && day >28) {return false;}
+        if (month == 3 && day >31) {return false;}
+        if (month == 4 && day >30) {return false;}
+        if (month == 5 && day >31) {return false;}
+        if (month == 6 && day >30) {return false;}
+        if (month == 7 && day >31) {return false;}
+        if (month == 8 && day >31) {return false;}
+        if (month == 9 && day >30) {return false;}
+        if (month == 10 && day >31) {return false;}
+        if (month == 11 && day >30) {return false;}
+        if (month == 12 && day >31) {return false;}
+
+        return true;
+    }
 }
