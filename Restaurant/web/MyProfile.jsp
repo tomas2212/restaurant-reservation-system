@@ -48,19 +48,24 @@
 
           </li>
           <li class="last">
-            <h1>Your reservations :</h1> 
-             <c:forEach items="${reservations}" var="reservation">
+            <h1>Your reservations :</h1>
+             <table>  
+             <% Collection<Reservation> reservations = (Collection<Reservation> ) request.getAttribute("reservations");
+
+             for(Reservation reservation : reservations) {
+                     %>
+
             <tr>
-                <td><c:out value="${reservation.reservationId}"/></td>
-                <td><c:out value="${reservation.date}"/></td>
-                <td><c:out value="${reservation.time}"/></td>
-                <td><c:out value="${reservation.duration}"/></td>
-                
-                <td><c:out value="Reservation"/></td>
+                <td>Id : <%=reservation.getTable().getTableId() %></td>
+                <td>Date :<%=reservation.getDate() %></td>
+                <td>From : <%=reservation.getTime()/60 %>h</td>
+                <td>To : <%=reservation.getTime()/60 + reservation.getDuration()/60 %>h </td>
             </tr>
+                      <%  } %>
+                      </table>
         </c:forEach>
                 <% Collection<Reservation> col = (Collection<Reservation> ) request.getAttribute("reservations");
-                    if(col.isEmpty()) { %>
+                    if(reservations.isEmpty()) { %>
                     <h2>You dont have any reservations</h2>
                   <%  } %>
           </li>

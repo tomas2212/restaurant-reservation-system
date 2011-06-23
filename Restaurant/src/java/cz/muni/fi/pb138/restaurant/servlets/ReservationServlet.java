@@ -50,11 +50,19 @@ public class ReservationServlet extends HttpServlet {
             request.getRequestDispatcher("/Registration.jsp").forward(request, response);
         }
 
+         if (request.getParameter("month") != null && request.getParameter("day") != null && !"".equals(request.getParameter("month")) &&!"".equals(request.getParameter("day"))  ) {
+              request.setAttribute("date", request.getParameter("day") + "." + request.getParameter("month") );
+              request.getRequestDispatcher("/Reservation.jsp").forward(request, response); return;
+
+         }
+         String book = request.getParameter("book");
         if ("true".equals(request.getParameter("book"))) {
 
-            String name = request.getParameter("name");
-            String surname = request.getParameter("surname");
-            String email = request.getParameter("email");
+
+            String name =(String) session.getAttribute("name");
+            String surname =(String) session.getAttribute("surname");
+            String email = (String) session.getAttribute("email");
+            String date = request.getParameter("date");
 
             Reservation reservation;
 
@@ -62,20 +70,21 @@ public class ReservationServlet extends HttpServlet {
                 Table table = tm.findTableByID(Integer.parseInt(request.getParameter("table")));
                 User user = um.findUser(email);
 
-                if ((table.isVip() && user.isVip())) {
-                } else {
+                if ((table.isVip() && !user.isVip())) {
+                
                     request.setAttribute("error", "You are not a VIP please select non-VIP table");
                     request.getRequestDispatcher("/Reservation.jsp").forward(request, response);
                     return;
                 }
 
-                int time = Integer.parseInt(request.getParameter("time_hour")) * 100 + Integer.parseInt(request.getParameter("time_minute"));
+                int time = Integer.parseInt(request.getParameter("time_hour")) * 60 + Integer.parseInt(request.getParameter("time_minute"));
                 int duration = 60;
 
                 reservation = new Reservation(user, table);
 
                 //reservation.setDate(date);
                 reservation.setTime(time);
+                reservation.setDate(date);
                 reservation.setDuration(duration);
 
                 manager.createReservation(reservation);
@@ -84,7 +93,7 @@ public class ReservationServlet extends HttpServlet {
                 request.setAttribute("success", "Reservation Successfull");
                 request.setAttribute("reservation", reservation);
             } else {
-                request.setAttribute("error", "You must fill all fields");
+                request.setAttribute("error", "You are not joined");
                 request.getRequestDispatcher("/Reservation.jsp").forward(request, response);
                 return;
             }
