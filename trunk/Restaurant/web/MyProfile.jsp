@@ -73,9 +73,7 @@
         </ul>
         <div class="clear"></div>
       </div>
-      <p>This application is created by students, so please dont use you primary passwords</p>
  
-
     <div class="clear"></div>
   </div>
 </div>

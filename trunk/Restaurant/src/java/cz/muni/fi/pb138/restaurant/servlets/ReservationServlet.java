@@ -11,6 +11,7 @@ import cz.muni.fi.pb138.restaurant.TableManager;
 import cz.muni.fi.pb138.restaurant.User;
 import cz.muni.fi.pb138.restaurant.UserManager;
 import java.io.IOException;
+import java.util.Collection;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +33,7 @@ public class ReservationServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
+
         HttpSession session = request.getSession(false);
 
         Manager manager = new Manager();
@@ -43,25 +44,36 @@ public class ReservationServlet extends HttpServlet {
             request.getRequestDispatcher("/Registration.jsp").forward(request, response);
         }
 
-         if (request.getParameter("month") != null && request.getParameter("day") != null && !"".equals(request.getParameter("month")) &&!"".equals(request.getParameter("day"))  ) {
-             int month = Integer.parseInt(request.getParameter("month")) ;
-             int day = Integer.parseInt(request.getParameter("day")) ;
-             if(checkDate(day,month)) {
-              request.setAttribute("date", request.getParameter("day") + "." + request.getParameter("month") );
-              request.getRequestDispatcher("/Reservation.jsp").forward(request, response); return;
-             } else {
-                 request.setAttribute("error", "Date was wrong");
+        if (request.getParameter("month") != null && request.getParameter("day") != null && !"".equals(request.getParameter("month")) && !"".equals(request.getParameter("day"))) {
+            int month = 0;
+            if(request.getParameter("month").substring(0,1).equals("0")){
+                month = Integer.parseInt(request.getParameter("month").substring(1,2));
+            }else{
+                month = Integer.parseInt(request.getParameter("month"));
+            }
+            int day = 0;
+            if(request.getParameter("day").substring(0,1).equals("0")){
+                day = Integer.parseInt(request.getParameter("day").substring(1,2));
+            }else{
+                day = Integer.parseInt(request.getParameter("day"));
+            }
+            if (checkDate(day, month)) {
+                request.setAttribute("date", "2011-" + request.getParameter("month") + "-" + request.getParameter("day"));
                 request.getRequestDispatcher("/Reservation.jsp").forward(request, response);
                 return;
-             }
+            } else {
+                request.setAttribute("error", "Date was wrong");
+                request.getRequestDispatcher("/Reservation.jsp").forward(request, response);
+                return;
+            }
 
-         }
-         String book = request.getParameter("book");
+        }
+        String book = request.getParameter("book");
         if ("true".equals(request.getParameter("book"))) {
 
 
-            String name =(String) session.getAttribute("name");
-            String surname =(String) session.getAttribute("surname");
+            String name = (String) session.getAttribute("name");
+            String surname = (String) session.getAttribute("surname");
             String email = (String) session.getAttribute("email");
             String date = request.getParameter("date");
 
@@ -72,7 +84,7 @@ public class ReservationServlet extends HttpServlet {
                 User user = um.findUser(email);
 
                 if ((table.isVip() && !user.isVip())) {
-                
+
                     request.setAttribute("error", "You are not a VIP please select non-VIP table");
                     request.getRequestDispatcher("/Reservation.jsp").forward(request, response);
                     return;
@@ -80,6 +92,13 @@ public class ReservationServlet extends HttpServlet {
 
                 int time = Integer.parseInt(request.getParameter("time_hour")) * 60 + Integer.parseInt(request.getParameter("time_minute"));
                 int duration = 60;
+
+                Collection<Table> free = tm.freeTables(um.findUser(email), date, time, duration);
+                if (!free.contains(table)) {
+                    request.setAttribute("error", "This table is already reserved!");
+                    request.getRequestDispatcher("/Reservation.jsp").forward(request, response);
+                    return;
+                }
 
                 reservation = new Reservation(user, table);
 
@@ -89,7 +108,6 @@ public class ReservationServlet extends HttpServlet {
                 reservation.setDuration(duration);
 
                 manager.createReservation(reservation);
-                manager.createUsersReservation(reservation, user);
 
                 request.setAttribute("success", "Reservation Successfull");
                 request.setAttribute("reservation", reservation);
@@ -148,19 +166,45 @@ public class ReservationServlet extends HttpServlet {
     }// </editor-fold>
 
     private boolean checkDate(int day, int month) {
-        if (month == 1 && day >31) {return false;}
-        if (month == 2 && day >28) {return false;}
-        if (month == 3 && day >31) {return false;}
-        if (month == 4 && day >30) {return false;}
-        if (month == 5 && day >31) {return false;}
-        if (month == 6 && day >30) {return false;}
-        if (month == 7 && day >31) {return false;}
-        if (month == 8 && day >31) {return false;}
-        if (month == 9 && day >30) {return false;}
-        if (month == 10 && day >31) {return false;}
-        if (month == 11 && day >30) {return false;}
-        if (month == 12 && day >31) {return false;}
-        if(month >12) {return false;}
+        if (month == 1 && day > 31) {
+            return false;
+        }
+        if (month == 2 && day > 28) {
+            return false;
+        }
+        if (month == 3 && day > 31) {
+            return false;
+        }
+        if (month == 4 && day > 30) {
+            return false;
+        }
+        if (month == 5 && day > 31) {
+            return false;
+        }
+        if (month == 6 && day > 30) {
+            return false;
+        }
+        if (month == 7 && day > 31) {
+            return false;
+        }
+        if (month == 8 && day > 31) {
+            return false;
+        }
+        if (month == 9 && day > 30) {
+            return false;
+        }
+        if (month == 10 && day > 31) {
+            return false;
+        }
+        if (month == 11 && day > 30) {
+            return false;
+        }
+        if (month == 12 && day > 31) {
+            return false;
+        }
+        if (month > 12) {
+            return false;
+        }
 
         return true;
     }

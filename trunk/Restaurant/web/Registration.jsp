@@ -44,7 +44,7 @@
         <ul>
           <li>
             <h1>In the case you are not registered, register here</h1>
-            <form action="${pageContext.request.contextPath}/LoginServlet?register=true" method="post" >
+            <form action="${pageContext.request.contextPath}/LoginServlet?register=true&" method="post" >
                 Firstname : <input type="text" name="firstname" /> <br/> <br/>
                 Surname : <input type="text" name="surname" /> <br/> <br/>
                 E-mail : <input type="text" name="email" /> <br/> <br/>
