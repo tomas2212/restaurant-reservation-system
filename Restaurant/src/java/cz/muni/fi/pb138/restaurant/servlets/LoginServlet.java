@@ -9,6 +9,9 @@ import cz.muni.fi.pb138.restaurant.User;
 import cz.muni.fi.pb138.restaurant.UserManager;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -80,14 +83,14 @@ public class LoginServlet extends HttpServlet {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
 
-            if (manager.login(email, password) ) {
+            if (manager.login(email, password)) {
                 session = request.getSession(true);
                 session.setAttribute("name", um.findUser(email).getFirstname());
                 session.setAttribute("surname", um.findUser(email).getSurname());
-                session.setAttribute("email",email);
+                session.setAttribute("email", email);
                 //session.setAttribute("email", email);
                 // vymazat
-                 //session.setAttribute("name", email);
+                //session.setAttribute("name", email);
                 //vymazat
             } else {
                 request.setAttribute("error", "Bad login or password");
@@ -107,13 +110,20 @@ public class LoginServlet extends HttpServlet {
                 user.setSurname(surname);
                 user.setPassword(password);
                 user.setVip(false);
+                
+                Date d = new Date();
+                Format formatter = formatter = new SimpleDateFormat("yyyy-MM-dd");
+                String dat = formatter.format(d);
 
-                if (um.addUser(user)) {
-
-                    session.setAttribute("name", user.getFirstname());
-                    session.setAttribute("email", user.getEmail());
+                if (email.matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")) {
+                    if (um.addUser(user)) {
+                        session.setAttribute("name", user.getFirstname());
+                        session.setAttribute("surname", user.getSurname());
+                        session.setAttribute("email", user.getEmail());
+                        session.setAttribute("date", dat);
+                    }
                 } else {
-                    request.setAttribute("error", "Registration failed");
+                    request.setAttribute("error", "Registration failed (User already exists or email is in bad format!)");
                     request.getRequestDispatcher("/Registration.jsp").forward(request, response);
                     return;
                 }

@@ -1,3 +1,6 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.text.Format"%>
+<%@page import="java.util.Date"%>
 <%@page import="java.util.Collection"%>
 <%@page import="cz.muni.fi.pb138.restaurant.Reservation"%>
 <%@page import="cz.muni.fi.pb138.restaurant.User"%>
@@ -21,9 +24,14 @@
     </head>
     <body id="top">
         <% String name = (String) session.getAttribute("name");
-        String date =(String)request.getAttribute("date");
-            if(date== null) {date ="23.6";}
-            if (name == null || "".equals(name)) {%>
+                    String date = (String) request.getAttribute("date");
+                    if (date == null) {
+                        Date d = new Date();
+                        Format formatter = formatter = new SimpleDateFormat("yyyy-MM-dd");
+                        String dat = formatter.format(d);
+                        date = dat;
+                    }
+                    if (name == null || "".equals(name)) {%>
         <div class="corner">
             <p><a class="login" href="Registration.jsp">Log in</a> </p>
         </div>
@@ -55,14 +63,14 @@
                     <% if (request.getAttribute("success") != null) {%>
                     <font COLOR="green"> <h2> ${success}  </h2></font>
                     <p>
-                        <% Reservation reservation = (Reservation) request.getAttribute("reservation"); %>
-                        <%= reservation.getUser().getFirstname() %>
-                        <%= reservation.getUser().getSurname() %>
-                        <%= reservation.getUser().getEmail() %>
-                        <%= reservation.getTable().getTableId() %>
-                        <%= reservation.getTable().getPlaces() %>
-                        <%= reservation.getTime() %>
-                        <%= reservation.getDuration() %>
+                        <% Reservation reservation = (Reservation) request.getAttribute("reservation");%>
+                        <%= reservation.getUser().getFirstname()%>
+                        <%= reservation.getUser().getSurname()%>
+                        <%= reservation.getUser().getEmail()%>
+                        <%= reservation.getTable().getTableId()%>
+                        <%= reservation.getTable().getPlaces()%>
+                        <%= reservation.getTime()%>
+                        <%= reservation.getDuration()%>
                     </p>
                     <% }%>
                     <div style="height:300px">
@@ -77,7 +85,7 @@
                             </tr>
                         </table>
                         <p> Selected day :  <%= date%> </p>
-                        
+
                         <div class="bookingtable">
                             <table>
                                 <tr>
@@ -89,46 +97,46 @@
                                     <td>21:00</td><td>22:00</td><td>23:00</td>
                                 </tr>
                                 <%
-                                    Manager manager = new Manager();
-                                    UserManager um = manager.getUm();
-                                    TableManager tm = manager.getTm();
-                                    ArrayList<Table> tables = (ArrayList<Table>) tm.allTables();
-                                    User user = new User(true);
-                                    String bgColor;
-                                    String value;
-                                    int[] times = new int[24];
-                                    
-                                    for(int i=0; i<24; i++){
-                                        
-                                    }
+                                            Manager manager = new Manager();
+                                            UserManager um = manager.getUm();
+                                            TableManager tm = manager.getTm();
+                                            ArrayList<Table> tables = (ArrayList<Table>) tm.allTables();
+                                            User user = new User(true);
+                                            String bgColor;
+                                            String value;
+                                            int[] times = new int[24];
+
+                                            for (int i = 0; i < 24; i++) {
+                                            }
                                 %> 
                                 <% for (int i = 0; i < tables.size(); i++) {%>
                                 <tr>
                                     <% if (tables.get(i).isVip()) {
-                                            bgColor = "orange";
-                                        } else {
-                                            bgColor = "white";
-                                        }
+                                             bgColor = "orange";
+                                         } else {
+                                             bgColor = "white";
+                                         }
                                     %>
                                     <td style="background-color:<%= bgColor%>"><%= tables.get(i).getTableId()%> ( <%= tables.get(i).getPlaces()%> )</td>
                                     <% for (int j = 0; j < 24; j++) {
-                                            if (j < 8 || j > 21) {
-                                                bgColor = "lightgrey";
-                                                value = "x";
-                                                times[j] = 0;
-                                            } else {
-                                                bgColor = "lightgreen";
+                                             if (j < 8 || j > 21) {
+                                                 bgColor = "lightgrey";
+                                                 value = "x";
+                                                 times[j] = 0;
+                                             } else {
+                                                 bgColor = "lightgreen";
+                                                 String mow = (String) session.getAttribute("email");
+                                                 Collection<Table> free = tm.freeTables(um.findUser(mow), date, j*60, 60);
+                                                 if (free.contains(tables.get(i))) {
+                                                     value = "o";
+                                                     times[j] = 1;
+                                                 } else {
+                                                     bgColor = "red";
+                                                     value = "o";
+                                                     times[j] = 0;
+                                                 }
+                                             }
 
-                                                Collection<Table> free =tm.freeTables(um.findUser((String)session.getAttribute("email")), date, j, 60);
-                                                if(free.contains(tables.get(i))) {
-                                                   value = "o";
-                                                   times[j] = 1;
-                                                } else {
-                                                bgColor = "red";
-                                                value = "o";
-                                                times[j] = 0; }
-                                            }
-                                            
                                     %> <td style="background-color:<%= bgColor%>"><%= value%></td>
                                     <% }%>
                                 </tr>
@@ -148,14 +156,53 @@
                     <div class="reservation">
                         <br/><br/><br/> <br/>
                         <form action="${pageContext.request.contextPath}/ReservationServlet" method="post" >
-                            Day :<input type="text" name="day" value="" />  Month :<input type="text" name="month" /> <input type="Submit" value="Check the day" />
-                            </form> <br/>
+                            Day :<select name="day">
+
+                                <% List<String> d = new ArrayList<String>();
+                                            for (int i = 1; i <= 31; i++) {
+                                                if (i < 10) {
+                                                    d.add("0" + Integer.toString(i));
+                                                } else {
+                                                    d.add(Integer.toString(i));
+                                                }
+                                            }%>
+
+                                <%if (d.isEmpty()) {%>
+                                <option value="none"> -- </option>
+                                <% }%>
+
+                                <% for (int i = 0; i < d.size(); i++) {%>
+                                <option value=<%= d.get(i)%>><%= d.get(i)%></option>
+                                <% }%>
+                            </select>
+
+                            Month :<select name="month">
+
+                                <% List<String> m = new ArrayList<String>();
+                                            for (int i = 1; i <= 12; i++) {
+                                                if (i < 10) {
+                                                    m.add("0" + Integer.toString(i));
+                                                } else {
+                                                    m.add(Integer.toString(i));
+                                                }
+                                            }%>
+
+                                <%if (m.isEmpty()) {%>
+                                <option value="none"> -- </option>
+                                <% }%>
+
+                                <% for (int i = 0; i < m.size(); i++) {%>
+                                <option value=<%= m.get(i)%>><%= m.get(i)%></option>
+                                <% }%>
+                            </select>
+                            <input type="Submit" value="Check the day" />
+                        </form> <br/>
                         <form action="${pageContext.request.contextPath}/ReservationServlet?book=true&date=<%= date%>" method="POST" >
-                            
+
                             Reserve as : <br/> <br/>
-                           <!-- Firstname : <input type="text" name="firstname" value="" /> <br/> <br/>
-                            Surname : <input type="text" name="surname" value="" /> <br/> <br/> -->
-                            
+                            <!-- Firstname : <input type="text" name="firstname" value="" /> <br/> <br/>
+                             Surname : <input type="text" name="surname" value="" /> <br/> <br/> -->
+
                             Table :
                             <select name="table">
                                 <% for (int i = 0; i < tables.size(); i++) {%>
@@ -167,11 +214,11 @@
                             <select name="time_hour">
 
                                 <% List<String> s = new ArrayList<String>();
-                                    for (int i = 8; i < times.length-2; i++) {
-                                       
-                                            s.add(Integer.toString(i));
-                                        
-                                    }%>
+                                            for (int i = 8; i < times.length - 2; i++) {
+
+                                                s.add(Integer.toString(i));
+
+                                            }%>
 
                                 <%if (s.isEmpty()) {%>
                                 <option value="none"> -- </option>
@@ -182,9 +229,9 @@
                                 <% }%>
                             </select> 
                             <select name="time_minute">
-                                
+
                                 <option value="0">00</option>
-                                
+
                             </select> <br/>
 
                             <input type="Submit" name="book" value="Book"/>

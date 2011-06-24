@@ -4,9 +4,9 @@
  */
 package cz.muni.fi.pb138.restaurant;
 
-import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -28,7 +28,7 @@ public class Main {
 
 
         //user and table creation---------------------------
-        /*Table table1 = new Table(true);
+        Table table1 = new Table(true);
         table1.setTableId(1);
         table1.setPlaces(3);
 
@@ -39,6 +39,18 @@ public class Main {
         Table table3 = new Table(true);
         table3.setTableId(3);
         table3.setPlaces(4);
+
+        Table table4 = new Table(false);
+        table4.setTableId(4);
+        table4.setPlaces(2);
+
+        Table table5 = new Table(false);
+        table5.setTableId(5);
+        table5.setPlaces(3);
+
+        Table table6 = new Table(false);
+        table6.setTableId(6);
+        table6.setPlaces(4);
 
         User user1 = new User(false);
         user1.setEmail("jakub.papcun@gmail.com");
@@ -59,13 +71,16 @@ public class Main {
         user3.setPassword("mani");
 
         //user and table adding-------------------------
-        umi.addUser(user1);
+        //umi.addUser(user1);
         tmi.addTable(table1);
-        umi.addUser(user2);
+        //umi.addUser(user2);
         tmi.addTable(table2);
-        umi.addUser(user3);
-        tmi.addTable(table3);*/
-        
+        //umi.addUser(user3);
+        tmi.addTable(table3);
+        tmi.addTable(table4);
+        tmi.addTable(table5);
+        tmi.addTable(table6);
+
 
         //login test---------------------------------------------------
         /*boolean jj = manager.login("tomas2212@gmail.com", "muni");
@@ -77,14 +92,14 @@ public class Main {
         //System.out.println(tmi.freeTables("2011-06-16", 720, 0).size());
 
         //reservation-----------------------------------------------------------
-        /*Reservation reservation1 = new Reservation();
-        reservation1.setDate("2011-06-16");
+        Reservation reservation1 = new Reservation();
+        reservation1.setDate("2011-06-17");
         reservation1.setTime(720);
         reservation1.setDuration(60);
         reservation1.setUser(umi.findUser("tomas2212@gmail.com"));
-        reservation1.setTable(tmi.findTableByID(1));
+        reservation1.setTable(tmi.findTableByID(2));
 
-        Reservation reservation2 = new Reservation();
+        /*Reservation reservation2 = new Reservation();
         reservation2.setDate("2011-06-15");
         reservation2.setTime(720);
         reservation2.setDuration(60);
@@ -118,7 +133,7 @@ public class Main {
         manager.createReservation(reservation2);
         manager.createReservation(reservation3);
         manager.createReservation(reservation4);
-        manager.createReservation(reservation5);*/
+        manager.createReservation(reservation1);*/
 
 
         //System.out.println(tmi.allTables().size());
@@ -128,8 +143,8 @@ public class Main {
         System.out.println(tt.getTableId());*/
 
         //System.out.println(tmi.freeTables(umi.findUser("jakub.papcun@gmail.com"),"2011-06-16", 660, 2).size());
-        /*System.out.println(tmi.freeTables("2011-06-16", 779, 2).size());
-        System.out.println(tmi.freeTables("2011-06-16", 781, 40).size());
+        //System.out.println(tmi.freeTables(umi.findUser("jakub.papcun@gmail.com"),"2011-06-16", 779, 2).size());
+        /*System.out.println(tmi.freeTables("2011-06-16", 781, 40).size());
         System.out.println(tmi.freeTables("2011-06-16", 840, 2).size());
         System.out.println(tmi.freeTables("2011-06-16", 839, 2).size());*/
 
@@ -137,7 +152,7 @@ public class Main {
         //System.out.println(umi.allUsersReservations(umi.findUser("jakub.papcun@gmail.com")).size());
 
         //delete reservation test-----------------------------------------------
-        //manager.deleteReservation(67);
+        //manager.deleteReservation(71);
 
         //System.out.println(manager.validation(new File("RESERVATIONS/2011-06-16.xml"), new File("SCHEMAS/reservationsSchema.xsd")));
 
@@ -153,6 +168,12 @@ public class Main {
         //umi.deleteUser(umi.findUser("tomas2212@gmail.com"));
 
         //deletng tables-------------------------------------------------------
-       //tmi.deleteTable(tmi.findTableByID(3));
+        //tmi.deleteTable(tmi.findTableByID(3));
+
+        /*Date d = new Date();
+        Format formatter = formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String date = formatter.format(d);
+        System.out.println(date);*/
+
     }
 }
