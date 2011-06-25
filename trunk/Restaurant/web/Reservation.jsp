@@ -190,7 +190,7 @@
                         </form> <br/>
                         <form action="${pageContext.request.contextPath}/ReservationServlet?book=true&date=<%= date%>" method="POST" >
 
-                            Reserve as : <br/> <br/>
+                            Reserve for date <strong>  <%= date%> </strong> : <br/> <br/>
                             <!-- Firstname : <input type="text" name="firstname" value="" /> <br/> <br/>
                              Surname : <input type="text" name="surname" value="" /> <br/> <br/> -->
 
