@@ -62,16 +62,7 @@
                     <% }%>
                     <% if (request.getAttribute("success") != null) {%>
                     <font COLOR="green"> <h2> ${success}  </h2></font>
-                    <p>
-                        <% Reservation reservation = (Reservation) request.getAttribute("reservation");%>
-                        <%= reservation.getUser().getFirstname()%>
-                        <%= reservation.getUser().getSurname()%>
-                        <%= reservation.getUser().getEmail()%>
-                        <%= reservation.getTable().getTableId()%>
-                        <%= reservation.getTable().getPlaces()%>
-                        <%= reservation.getTime()%>
-                        <%= reservation.getDuration()%>
-                    </p>
+                   
                     <% }%>
                     <div style="height:300px">
                         <table name="weekdays"><tr>
@@ -84,7 +75,7 @@
                                 <td class="sunday">Sunday 08:00 - 22:00</td>
                             </tr>
                         </table>
-                        <p> Selected day :  <%= date%> </p>
+                        <h1> Selected day : <strong>  <%= date%> </strong> </h1>
 
                         <div class="bookingtable">
                             <table>
@@ -154,7 +145,7 @@
                         </div>
                     </div>
                     <div class="reservation">
-                        <br/><br/><br/> <br/> <br/> <br/> <br/>
+                        <br/><br/><br/> <br/> <br/> <br/> <br/> <br/><br/>
                         <form action="${pageContext.request.contextPath}/ReservationServlet" method="post" >
                             Day :<select name="day">
 

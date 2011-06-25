@@ -86,6 +86,7 @@ public class ReservationServlet extends HttpServlet {
                 if ((table.isVip() && !user.isVip())) {
 
                     request.setAttribute("error", "You are not a VIP please select non-VIP table");
+                    request.setAttribute("date", date);
                     request.getRequestDispatcher("/Reservation.jsp").forward(request, response);
                     return;
                 }
@@ -96,6 +97,7 @@ public class ReservationServlet extends HttpServlet {
                 Collection<Table> free = tm.freeTables(um.findUser(email), date, time, duration);
                 if (!free.contains(table)) {
                     request.setAttribute("error", "This table is already reserved!");
+                    request.setAttribute("date", date);
                     request.getRequestDispatcher("/Reservation.jsp").forward(request, response);
                     return;
                 }
@@ -110,6 +112,7 @@ public class ReservationServlet extends HttpServlet {
                 manager.createReservation(reservation);
 
                 request.setAttribute("success", "Reservation Successfull");
+                request.setAttribute("date", date);
                 request.setAttribute("reservation", reservation);
             } else {
                 request.setAttribute("error", "You are not joined");
