@@ -154,7 +154,7 @@
                         </div>
                     </div>
                     <div class="reservation">
-                        <br/><br/><br/> <br/>
+                        <br/><br/><br/> <br/> <br/> <br/> <br/>
                         <form action="${pageContext.request.contextPath}/ReservationServlet" method="post" >
                             Day :<select name="day">
 
