@@ -58,8 +58,7 @@
             <tr>
                 <td>Id : <%=reservation.getReservationId() %></td>
                 <td>Date :<%=reservation.getDate() %></td>
-                <td>From : <%=reservation.getTime()/60 %>h</td>
-                <td>To : <%=reservation.getTime()/60 + reservation.getDuration()/60 %>h </td>
+                <td>Time : <%=reservation.getTime()/60 %>:00 - <%=reservation.getTime()/60 + reservation.getDuration()/60 %>:00 </td>
                 <td><a href="${pageContext.request.contextPath}/MyProfile?reservationId=<%=reservation.getReservationId()%>" > Cancel </a></td>
             </tr>
                       <%  } %>
