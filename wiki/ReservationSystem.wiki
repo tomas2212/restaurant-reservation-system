@@ -25,4 +25,5 @@ Tomáš Svrček - Java programming,
 Robert Zahradníček - Web interface
 
 = JavaDoc =
+
 <a href="http://code.google.com/p/restaurant-reservation-system/source/browse/wiki/index.html" alt="JavaDoc">JavaDoc</a>
