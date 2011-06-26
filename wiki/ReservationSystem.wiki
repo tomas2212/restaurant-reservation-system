@@ -11,3 +11,15 @@ The application should be able to reserve a table in a current time by a registe
 The application is being programmed in Java (in progress). The page will be established soon with a Class Diagram and so on...
 
 <a href="http://code.google.com/p/restaurant-reservation-system/source/browse/wiki/Class_Diagram.jpeg" alt="classDiagram">Class Diagram</a>
+
+= Team =
+Matej Briškár
+Jakub Papcun
+Tomáš Svrček
+Robert Zahradníček - Team leader
+
+= Tasks =
+Matej Briškár - Web interface
+Jakub Papcun - Java programming
+Tomáš Svrček - Java programming
+Robert Zahradníček - Web interface
