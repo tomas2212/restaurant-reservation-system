@@ -26,4 +26,4 @@ Robert Zahradníček - Web interface
 
 = JavaDoc =
 
-<a href="http://code.google.com/p/restaurant-reservation-system/source/browse/wiki/index" alt="JavaDoc">JavaDoc</a>
+<a href="http://code.google.com/p/restaurant-reservation-system/source/browse/wiki/index.hml" alt="JavaDoc">JavaDoc</a>
