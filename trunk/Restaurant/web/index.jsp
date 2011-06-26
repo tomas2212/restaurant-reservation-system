@@ -47,7 +47,7 @@
       <li style="padding-left: 100px; text-indent:50px; font-size: 1.5em;"> <strong> M.Briskar  </strong> </li> <br/>
       <li style="padding-left: 100px; text-indent:50px; font-size: 1.5em;"> <strong> R.Zahradnicek   </strong> </li> <br/>
       <li style="padding-left: 100px; text-indent:50px; font-size: 1.5em;"> <strong> J.Papcun   </strong> </li> <br/>
-      <li style="padding-left: 100px; text-indent:50px; font-size: 1.5em;"> <strong>  T Svrcek  </strong> </li> 
+      <li style="padding-left: 100px; text-indent:50px; font-size: 1.5em;"> <strong> T.Svrcek  </strong> </li>
     </ul>
     <div class="clear"></div>
   </div>
