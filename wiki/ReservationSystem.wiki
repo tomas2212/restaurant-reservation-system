@@ -23,7 +23,3 @@ Matej Briškár - Web interface,
 Jakub Papcun - Java programming,
 Tomáš Svrček - Java programming,
 Robert Zahradníček - Web interface
-
-= JavaDoc =
-
-<a href="http://www.ulozto.cz/9498768/javadoc-rar" alt="JavaDoc">JavaDoc</a>
