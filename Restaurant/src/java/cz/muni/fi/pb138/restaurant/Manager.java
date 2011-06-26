@@ -194,8 +194,7 @@ public class Manager {
         boolean success = false;
         Document doc = null;
 
-        String currentPath = this.getClass().getResource("/").toString();
-        currentPath = currentPath.substring(6, currentPath.length());
+        String currentPath = this.getClass().getResource("/").getPath();
         File initialFile = new File(currentPath);
         for (int i = 0; i < 4; i++) {
             initialFile = initialFile.getParentFile();
