@@ -43,7 +43,11 @@
   <div id="gallery">
     <ul>
       <li class="placeholder" style="background-image:url(images/1.jpg);">Image Holder</li> <br/> <br/>
-      <li style="padding-left: 100px; text-indent:50px; font-size: 1.5em;">M.Briskar : <strong> "best restaurant ever" </strong> </li>
+      <li style="padding-left: 100px; text-indent:50px; font-size: 1.5em;">The project team : <strong>  </li> <br/>
+      <li style="padding-left: 100px; text-indent:50px; font-size: 1.5em;"> <strong> M.Briskar  </strong> </li> <br/>
+      <li style="padding-left: 100px; text-indent:50px; font-size: 1.5em;"> <strong> R.Zahradnicek   </strong> </li> <br/>
+      <li style="padding-left: 100px; text-indent:50px; font-size: 1.5em;"> <strong> J.Papcun   </strong> </li> <br/>
+      <li style="padding-left: 100px; text-indent:50px; font-size: 1.5em;"> <strong>  T Svrcek  </strong> </li> 
     </ul>
     <div class="clear"></div>
   </div>
