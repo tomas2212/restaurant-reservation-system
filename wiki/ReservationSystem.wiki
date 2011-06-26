@@ -13,13 +13,13 @@ The application is being programmed in Java (in progress). The page will be esta
 <a href="http://code.google.com/p/restaurant-reservation-system/source/browse/wiki/Class_Diagram.jpeg" alt="classDiagram">Class Diagram</a>
 
 = Team =
-Matej Briškár
-Jakub Papcun
-Tomáš Svrček
+Matej Briškár,
+Jakub Papcun,
+Tomáš Svrček,
 Robert Zahradníček - Team leader
 
 = Tasks =
-Matej Briškár - Web interface
-Jakub Papcun - Java programming
-Tomáš Svrček - Java programming
+Matej Briškár - Web interface,
+Jakub Papcun - Java programming,
+Tomáš Svrček - Java programming,
 Robert Zahradníček - Web interface
